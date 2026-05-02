@@ -10,31 +10,31 @@ import { CellStatus, CellData, Team, GameState } from './types';
 
 // 1. 키워드별 고유 미션 설명 데이터
 const INITIAL_KEYWORDS = [
-  { keyword: '데뷔 앨범', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!' },
-  { keyword: '월드 투어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.' },
-  { keyword: '음악 방송 1위', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.' },
-  { keyword: '뮤비 조회수', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.' },
-  { keyword: '응원법', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.' },
-  { keyword: '팬클럽 모집', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.' },
-  { keyword: '솔로 데뷔', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.' },
-  { keyword: '화보 촬영', description: '최근 화제가 된 패션 잡지 화보의 컨셉명을 맞히는 미션입니다.' },
-  { keyword: '콜라보', description: '타 아티스트와 협업한 곡 중 가장 높은 차트 순위를 기록한 곡은?' },
-  { keyword: '안무 영상', description: '안무 영상 조회수 1억 뷰를 가장 빨리 달성한 곡을 맞혀보세요.' },
-  { keyword: 'OST 참여', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.' },
-  { keyword: '광고 모델', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.' },
-  { keyword: '앵콜 콘서트', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.' },
-  { keyword: '미니 앨범', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!' },
-  { keyword: '라이브 방송', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?' },
-  { keyword: '시상식', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.' },
-  { keyword: '챌린지', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.' },
-  { keyword: '팬 미팅', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.' },
-  { keyword: '시구/시타', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.' },
-  { keyword: '포토카드', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.' },
-  { keyword: '팝업 스토어', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.' },
-  { keyword: '자체 콘텐츠', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?' },
-  { keyword: '라디오 출연', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.' },
-  { keyword: '공항 패션', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.' },
-  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.' },
+  { keyword: '데뷔 앨범', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!', videoUrl: 'https://www.youtube.com/watch?v=debut_song' },
+  { keyword: '월드 투어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.', videoUrl: 'https://www.youtube.com/watch?v=world_tour' },
+  { keyword: '음악 방송 1위', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.', videoUrl: 'https://www.youtube.com/watch?v=music_show' },
+  { keyword: '뮤비 조회수', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.', videoUrl: 'https://www.youtube.com/watch?v=music_video' },
+  { keyword: '응원법', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.', videoUrl: 'https://www.youtube.com/watch?v=cheer_action' },
+  { keyword: '팬클럽 모집', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.', videoUrl: 'https://www.youtube.com/watch?v=fan_club'   },
+  { keyword: '솔로 데뷔', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=solo_debut' },
+  { keyword: '화보 촬영', description: '최근 화제가 된 패션 잡지 화보의 컨셉명을 맞히는 미션입니다.', videoUrl: '' },
+  { keyword: '콜라보', description: '타 아티스트와 협업한 곡 중 가장 높은 차트 순위를 기록한 곡은?', videoUrl: '' },
+  { keyword: '안무 영상', description: '안무 영상 조회수 1억 뷰를 가장 빠르게 달성한 곡을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=choreography' },
+  { keyword: 'OST 참여', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=ost' },
+  { keyword: '광고 모델', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.', videoUrl: 'https://www.youtube.com/watch?v=ad_model' },
+  { keyword: '앵콜 콘서트', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=anchor_concert' },
+  { keyword: '미니 앨범', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!', videoUrl: 'https://www.youtube.com/watch?v=mini_album' },
+  { keyword: '라이브 방송', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?', videoUrl: 'https://www.youtube.com/watch?v=live_broadcast' },
+  { keyword: '시상식', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.', videoUrl: 'https://www.youtube.com/watch?v=award_ceremony' },
+  { keyword: '챌린지', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.', videoUrl: 'https://www.youtube.com/watch?v=challenge' },
+  { keyword: '팬 미팅', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=fan_meeting' },
+  { keyword: '시구/시타', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=pitcher_uniform' },
+  { keyword: '포토카드', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.', videoUrl: 'https://www.youtube.com/watch?v=photo_card' },
+  { keyword: '팝업 스토어', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.', videoUrl: 'https://www.youtube.com/watch?v=popup_store' },
+  { keyword: '자체 콘텐츠', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: 'https://www.youtube.com/watch?v=original_content' },
+  { keyword: '라디오 출연', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=radio_appearance' },
+  { keyword: '공항 패션', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: 'https://www.youtube.com/watch?v=airport_fashion' },
+  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=season_greeting' },
 ];
 
 // 2. 인터페이스 정의 (BingoCell 전용)
@@ -50,7 +50,8 @@ export default function App() {
     cells: INITIAL_KEYWORDS.map((k, i) => ({ 
       id: i, 
       keyword: k.keyword, 
-      description: k.description, // 동적 데이터 매핑
+      description: k.description, // 동적 데이터 매핑(문제명)
+      videoUrl: k.videoUrl, // 동적 데이터 매핑(영상)
       status: CellStatus.EMPTY 
     })),
     teamAScore: 0,
@@ -283,18 +284,48 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
           <button onClick={onClose} className="p-3 hover:bg-white/10 rounded-2xl transition-all"><X /></button>
         </div>
 
-        <div className="bg-white/5 border border-white/10 p-12 rounded-[2rem] text-center mb-10">
-           <div className="space-y-6">
-             <div className="inline-flex items-center gap-2 px-4 py-1 bg-white/10 rounded-full border border-white/10">
-                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping" />
-                <span className="text-[10px] font-black uppercase text-white/80">Instruction</span>
+        {/* 메인 콘텐츠 구역: 영상 및 설명 */}
+        <div className="grid grid-cols-1 gap-6 mb-8">
+          
+          {/* 영상 플레이어 구역 (영상이 있을 때만 렌더링) */}
+          <div className="relative group">
+            {cell.videoUrl ? (
+              <div className="relative w-full aspect-video rounded-[1.5rem] overflow-hidden border-2 border-white/10 bg-black shadow-2xl">
+                <video 
+                  src={cell.videoUrl}
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  controls
+                />
+                {/* 영상 위 오버레이 장식 */}
+                <div className="absolute top-4 left-4 px-3 py-1 bg-red-600 text-[10px] font-black rounded-md flex items-center gap-2 animate-pulse">
+                  <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                  LIVE PROBLEM
+                </div>
+              </div>
+            ) : (
+              /* 영상이 없을 때 보여줄 기본 비주얼 */
+              <div className="w-full aspect-video rounded-[1.5rem] border-2 border-dashed border-white/10 flex flex-col items-center justify-center bg-white/5 overflow-hidden">
+                <div className="absolute w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] animate-pulse" />
+                <Trophy size={48} className="text-white/10 mb-4" />
+                <p className="text-white/20 text-xs font-bold uppercase tracking-widest">No Media Attached</p>
+              </div>
+            )}
+          </div>
+
+          {/* 미션 가이드 문구 */}
+          <div className="bg-white/5 border border-white/10 p-8 rounded-[1.5rem] text-center relative overflow-hidden">
+             <div className="relative z-10 space-y-4">
+               <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 rounded-full border border-blue-500/30">
+                  <span className="text-[9px] font-black uppercase text-blue-400 tracking-tighter">Mission Instruction</span>
+               </div>
+               <h4 className="text-2xl md:text-3xl font-black italic text-white leading-tight break-keep">
+                 {cell.description}
+               </h4>
              </div>
-             {/* 핵심 수정 사항: cell.description을 동적으로 출력 */}
-             <h4 className="text-3xl font-black italic text-white leading-tight break-keep">
-               {cell.description}
-             </h4>
-             <p className="text-white/40 text-sm">데이터 확인 후 아래 버튼을 통해 결과를 확정하세요.</p>
-           </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
