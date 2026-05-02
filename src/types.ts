@@ -12,6 +12,7 @@ export enum CellStatus {
 export interface CellData {
   id: number;
   keyword: string;
+  description : string;
   status: CellStatus;
 }
 
