@@ -4,40 +4,38 @@
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; // motion/react 환경에 따라 framer-motion으로 변경 가능
+import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Crown, X, Check, Trophy } from 'lucide-react';
 import { CellStatus, CellData, Team, GameState } from './types';
 
-// 1. 키워드별 고유 미션 설명 데이터
 const INITIAL_KEYWORDS = [
-  { keyword: '데뷔 앨범', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!', videoUrl: 'https://www.youtube.com/watch?v=debut_song' },
-  { keyword: '월드 투어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.', videoUrl: 'https://www.youtube.com/watch?v=world_tour' },
-  { keyword: '음악 방송 1위', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.', videoUrl: 'https://www.youtube.com/watch?v=music_show' },
-  { keyword: '뮤비 조회수', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.', videoUrl: 'https://www.youtube.com/watch?v=music_video' },
-  { keyword: '응원법', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.', videoUrl: 'https://www.youtube.com/watch?v=cheer_action' },
-  { keyword: '팬클럽 모집', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.', videoUrl: 'https://www.youtube.com/watch?v=fan_club'   },
-  { keyword: '솔로 데뷔', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=solo_debut' },
+  { keyword: '데뷔 앨범', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!', videoUrl: '' },
+  { keyword: '월드 투어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.', videoUrl: '' },
+  { keyword: '음악 방송 1위', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.', videoUrl: '' },
+  { keyword: '뮤비 조회수', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.', videoUrl: '' },
+  { keyword: '응원법', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.', videoUrl: '' },
+  { keyword: '팬클럽 모집', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.', videoUrl: '' },
+  { keyword: '솔로 데뷔', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.', videoUrl: '' },
   { keyword: '화보 촬영', description: '최근 화제가 된 패션 잡지 화보의 컨셉명을 맞히는 미션입니다.', videoUrl: '' },
   { keyword: '콜라보', description: '타 아티스트와 협업한 곡 중 가장 높은 차트 순위를 기록한 곡은?', videoUrl: '' },
-  { keyword: '안무 영상', description: '안무 영상 조회수 1억 뷰를 가장 빠르게 달성한 곡을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=choreography' },
-  { keyword: 'OST 참여', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=ost' },
-  { keyword: '광고 모델', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.', videoUrl: 'https://www.youtube.com/watch?v=ad_model' },
-  { keyword: '앵콜 콘서트', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=anchor_concert' },
-  { keyword: '미니 앨범', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!', videoUrl: 'https://www.youtube.com/watch?v=mini_album' },
-  { keyword: '라이브 방송', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?', videoUrl: 'https://www.youtube.com/watch?v=live_broadcast' },
-  { keyword: '시상식', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.', videoUrl: 'https://www.youtube.com/watch?v=award_ceremony' },
-  { keyword: '챌린지', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.', videoUrl: 'https://www.youtube.com/watch?v=challenge' },
-  { keyword: '팬 미팅', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=fan_meeting' },
-  { keyword: '시구/시타', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=pitcher_uniform' },
-  { keyword: '포토카드', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.', videoUrl: 'https://www.youtube.com/watch?v=photo_card' },
-  { keyword: '팝업 스토어', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.', videoUrl: 'https://www.youtube.com/watch?v=popup_store' },
-  { keyword: '자체 콘텐츠', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: 'https://www.youtube.com/watch?v=original_content' },
-  { keyword: '라디오 출연', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=radio_appearance' },
-  { keyword: '공항 패션', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: 'https://www.youtube.com/watch?v=airport_fashion' },
-  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: 'https://www.youtube.com/watch?v=season_greeting' },
+  { keyword: '안무 영상', description: '안무 영상 조회수 1억 뷰를 가장 빠르게 달성한 곡을 맞혀보세요.', videoUrl: '' },
+  { keyword: 'OST 참여', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.', videoUrl: '' },
+  { keyword: '광고 모델', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.', videoUrl: '' },
+  { keyword: '앵콜 콘서트', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.', videoUrl: '' },
+  { keyword: '미니 앨범', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!', videoUrl: '' },
+  { keyword: '라이브 방송', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?', videoUrl: '' },
+  { keyword: '시상식', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.', videoUrl: '' },
+  { keyword: '챌린지', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.', videoUrl: '' },
+  { keyword: '팬 미팅', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.', videoUrl: '' },
+  { keyword: '시구/시타', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.', videoUrl: '' },
+  { keyword: '포토카드', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.', videoUrl: '' },
+  { keyword: '팝업 스토어', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.', videoUrl: '' },
+  { keyword: '자체 콘텐츠', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: '' },
+  { keyword: '라디오 출연', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: '' },
+  { keyword: '공항 패션', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: '' },
+  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: '' },
 ];
 
-// 2. 인터페이스 정의 (BingoCell 전용)
 interface BingoCellProps {
   cell: CellData;
   onClick: () => void;
@@ -46,16 +44,14 @@ interface BingoCellProps {
 }
 
 export default function App() {
-  const [gameState, setGameState] = useState<GameState>({
+  const [gameState, setGameState] = useState<Omit<GameState, 'teamAScore' | 'teamBScore'>>({
     cells: INITIAL_KEYWORDS.map((k, i) => ({ 
       id: i, 
       keyword: k.keyword, 
-      description: k.description, // 동적 데이터 매핑(문제명)
-      videoUrl: k.videoUrl, // 동적 데이터 매핑(영상)
+      description: k.description,
+      videoUrl: k.videoUrl,
       status: CellStatus.EMPTY 
     })),
-    teamAScore: 0,
-    teamBScore: 0,
     teamABingoCount: 0,
     teamBBingoCount: 0,
     teamAChanceUsed: false,
@@ -66,7 +62,6 @@ export default function App() {
   const [selectedCellId, setSelectedCellId] = useState<number | null>(null);
   const [showBingoAnimation, setShowBingoAnimation] = useState<{ team: Team, lines: number[][] } | null>(null);
 
-  // 빙고 체크 로직
   const checkBingo = useCallback((cells: CellData[], team: Team) => {
     const size = 5;
     const lines: number[][] = [];
@@ -101,20 +96,15 @@ export default function App() {
     setGameState(prev => {
       const newCells = [...prev.cells];
       const cell = newCells[selectedCellId];
-      let newAScore = prev.teamAScore;
-      let newBScore = prev.teamBScore;
       let newAUsed = prev.teamAChanceUsed;
       let newBUsed = prev.teamBChanceUsed;
 
       if (resultType === 'A') {
         cell.status = cell.status === CellStatus.TEAM_B ? CellStatus.BOTH : CellStatus.TEAM_A;
-        newAScore += 25;
       } else if (resultType === 'B') {
         cell.status = cell.status === CellStatus.TEAM_A ? CellStatus.BOTH : CellStatus.TEAM_B;
-        newBScore += 25;
       } else if (resultType === 'BOTH') {
         cell.status = CellStatus.BOTH;
-        newAScore += 25; newBScore += 25;
       } else if (resultType === 'FAIL') {
         cell.status = CellStatus.FAIL;
       } else if (resultType === 'LOCK_A') {
@@ -132,8 +122,6 @@ export default function App() {
       return {
         ...prev,
         cells: newCells,
-        teamAScore: newAScore,
-        teamBScore: newBScore,
         teamABingoCount: bingoA.length,
         teamBBingoCount: bingoB.length,
         teamAChanceUsed: newAUsed,
@@ -162,8 +150,8 @@ export default function App() {
         </h1>
       </motion.div>
 
-      <div className="w-full max-w-7xl flex flex-col lg:flex-row items-stretch justify-center gap-6 relative z-10">
-        <TeamCard team="A" name="STARLIGHT" score={gameState.teamAScore} bingo={gameState.teamABingoCount} chanceUsed={gameState.teamAChanceUsed} isActive={gameState.turn === 'A'} color="blue" />
+      <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-6 relative z-10">
+        <TeamCard team="A" name="STARLIGHT" bingo={gameState.teamABingoCount} chanceUsed={gameState.teamAChanceUsed} isActive={gameState.turn === 'A'} color="blue" />
 
         <div className="flex-1 flex flex-col items-center gap-4">
           <div className="bg-white/5 border-2 border-white/10 p-4 rounded-xl backdrop-blur-md">
@@ -181,7 +169,7 @@ export default function App() {
           </div>
         </div>
 
-        <TeamCard team="B" name="AURORA" score={gameState.teamBScore} bingo={gameState.teamBBingoCount} chanceUsed={gameState.teamBChanceUsed} isActive={gameState.turn === 'B'} color="pink" />
+        <TeamCard team="B" name="AURORA" bingo={gameState.teamBBingoCount} chanceUsed={gameState.teamBChanceUsed} isActive={gameState.turn === 'B'} color="pink" />
       </div>
 
       <AnimatePresence>
@@ -194,11 +182,42 @@ export default function App() {
             canLockB={!gameState.teamBChanceUsed}
           />
         )}
+        
         {showBingoAnimation && (
-          <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 1.5, opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-            <div className={`text-6xl font-black italic uppercase px-12 py-6 border-4 rounded-2xl ${showBingoAnimation.team === 'A' ? 'text-blue-400 border-blue-400 shadow-[0_0_30px_rgba(59,130,246,0.5)]' : 'text-pink-400 border-pink-400 shadow-[0_0_30px_rgba(236,72,153,0.5)]'}`}>
-              {showBingoAnimation.team === 'A' ? 'Starlight' : 'Aurora'} BINGO!
-            </div>
+          <motion.div 
+            key="bingo-overlay"
+            initial={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none overflow-hidden"
+          >
+            <motion.div
+              initial={{ x: '-150vw', skewX: '-25deg' }}
+              animate={{ x: '150vw' }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className={`absolute top-0 bottom-0 w-[120vw] border-r-[15px] ${
+                showBingoAnimation.team === 'A'
+                  ? 'border-blue-300 bg-gradient-to-r from-transparent via-blue-600/50 to-blue-400 shadow-[20px_0_100px_rgba(59,130,246,0.8)]'
+                  : 'border-pink-300 bg-gradient-to-r from-transparent via-pink-600/50 to-pink-400 shadow-[20px_0_100px_rgba(236,72,153,0.8)]'
+              }`}
+            />
+
+            <motion.div 
+              initial={{ scale: 0.3, opacity: 0, y: 50 }} 
+              animate={{ scale: 1, opacity: 1, y: 0 }} 
+              transition={{ delay: 0.3, type: 'spring', bounce: 0.6 }}
+              className={`relative z-10 text-6xl md:text-8xl font-black italic uppercase px-16 py-8 border-4 rounded-[3rem] backdrop-blur-md ${
+                showBingoAnimation.team === 'A' 
+                  ? 'text-white bg-blue-900/40 border-blue-400 shadow-[0_0_80px_rgba(59,130,246,0.6)]' 
+                  : 'text-white bg-pink-900/40 border-pink-400 shadow-[0_0_80px_rgba(236,72,153,0.6)]'
+              }`}
+            >
+              <div className="flex flex-col items-center gap-2">
+                <span className={`text-2xl tracking-[0.3em] ${showBingoAnimation.team === 'A' ? 'text-blue-300' : 'text-pink-300'}`}>
+                  {showBingoAnimation.team === 'A' ? 'STARLIGHT' : 'AURORA'}
+                </span>
+                <span>BINGO!</span>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -206,11 +225,11 @@ export default function App() {
   );
 }
 
-// 팀 카드 컴포넌트
-function TeamCard({ team, name, score, bingo, chanceUsed, isActive, color }: any) {
+// 점수 영역을 제거하고 빙고 현황을 강조한 팀 카드
+function TeamCard({ team, name, bingo, chanceUsed, isActive, color }: any) {
   const accentColor = color === 'blue' ? 'border-blue-500 shadow-blue-500/20' : 'border-pink-500 shadow-pink-500/20';
   return (
-    <motion.div layout className={`w-full lg:w-72 p-6 rounded-3xl flex flex-col gap-6 backdrop-blur-2xl transition-all duration-700 ${isActive ? `border-2 scale-105 ${accentColor} shadow-[0_0_40px_-10px_currentColor]` : 'border border-white/10 opacity-70'} bg-white/5 relative overflow-hidden`}>
+    <motion.div layout className={`w-full lg:w-64 p-6 rounded-3xl flex flex-col gap-6 backdrop-blur-2xl transition-all duration-700 ${isActive ? `border-2 scale-105 ${accentColor} shadow-[0_0_40px_-10px_currentColor]` : 'border border-white/10 opacity-70'} bg-white/5 relative overflow-hidden`}>
       <div className="flex items-center justify-between relative z-10">
         <div className={`p-2.5 rounded-xl ${color === 'blue' ? 'bg-blue-500' : 'bg-pink-500'}`}>
           <Trophy size={20} className="text-white" />
@@ -219,13 +238,19 @@ function TeamCard({ team, name, score, bingo, chanceUsed, isActive, color }: any
           {isActive ? 'Live Playing' : 'Wait'}
         </div>
       </div>
+      
       <div className="relative z-10">
         <p className={`text-2xl font-black italic uppercase ${color === 'blue' ? 'text-blue-400' : 'text-pink-400'}`}>{name}</p>
       </div>
-      <div className="bg-black/60 p-5 rounded-2xl border border-white/5 flex items-center justify-between relative z-10">
-        <div><p className="text-[10px] font-bold text-white/40 uppercase">Points</p><p className="text-3xl font-black">{score}</p></div>
-        <div className="text-right"><p className="text-[10px] font-bold text-white/40 uppercase">Bingo</p><p className={`text-3xl font-black ${bingo > 0 ? (color === 'blue' ? 'text-blue-400' : 'text-pink-400') : ''}`}>{bingo}</p></div>
+
+      {/* 빙고 현황 강조 섹션 */}
+      <div className="bg-black/40 p-6 rounded-2xl border border-white/10 flex flex-col items-center justify-center relative z-10">
+        <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Current Bingo</p>
+        <p className={`text-5xl font-black ${bingo > 0 ? (color === 'blue' ? 'text-blue-400' : 'text-pink-400') : 'text-white'}`}>
+          {bingo}
+        </p>
       </div>
+
       <div className={`flex items-center justify-between p-4 rounded-xl border relative z-10 ${chanceUsed ? 'bg-white/5 opacity-50' : 'bg-white/10'}`}>
         <div className="flex items-center gap-2"><Lock size={14} /><span className="text-[10px] font-bold uppercase">Lock Chance</span></div>
         {chanceUsed ? <X size={14} /> : <Check size={14} />}
@@ -253,7 +278,7 @@ const BingoCell: React.FC<BingoCellProps> = ({ cell, onClick, isBingo, bingoTeam
       whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
       onClick={onClick}
       disabled={cell.status === CellStatus.FAIL || cell.status.toString().includes('LOCKED')}
-      className={`relative w-16 h-16 md:w-24 md:h-24 p-2 rounded-xl border-2 transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer ${getCellStyles()} ${isBingo ? 'z-20 ring-4 ring-yellow-400' : ''}`}
+      className={`relative w-16 h-16 md:w-24 md:h-24 p-2 rounded-xl border-2 transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer ${getCellStyles()} ${isBingo ? 'z-20 ring-4 ring-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.5)]' : ''}`}
     >
       {cell.status === CellStatus.BOTH && (
         <div className="absolute inset-0 z-0">
@@ -268,7 +293,7 @@ const BingoCell: React.FC<BingoCellProps> = ({ cell, onClick, isBingo, bingoTeam
   );
 }
 
-// 미션 모달 컴포넌트 (동적 설명 반영)
+// 미션 모달 컴포넌트
 function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl">
@@ -284,29 +309,16 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
           <button onClick={onClose} className="p-3 hover:bg-white/10 rounded-2xl transition-all"><X /></button>
         </div>
 
-        {/* 메인 콘텐츠 구역: 영상 및 설명 */}
         <div className="grid grid-cols-1 gap-6 mb-8">
-          
-          {/* 영상 플레이어 구역 (영상이 있을 때만 렌더링) */}
           <div className="relative group">
             {cell.videoUrl ? (
               <div className="relative w-full aspect-video rounded-[1.5rem] overflow-hidden border-2 border-white/10 bg-black shadow-2xl">
-                <video 
-                  src={cell.videoUrl}
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  loop
-                  muted
-                  controls
-                />
-                {/* 영상 위 오버레이 장식 */}
+                <video src={cell.videoUrl} className="w-full h-full object-cover" autoPlay loop muted controls />
                 <div className="absolute top-4 left-4 px-3 py-1 bg-red-600 text-[10px] font-black rounded-md flex items-center gap-2 animate-pulse">
-                  <div className="w-1.5 h-1.5 bg-white rounded-full" />
-                  LIVE PROBLEM
+                  <div className="w-1.5 h-1.5 bg-white rounded-full" /> LIVE PROBLEM
                 </div>
               </div>
             ) : (
-              /* 영상이 없을 때 보여줄 기본 비주얼 */
               <div className="w-full aspect-video rounded-[1.5rem] border-2 border-dashed border-white/10 flex flex-col items-center justify-center bg-white/5 overflow-hidden">
                 <div className="absolute w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] animate-pulse" />
                 <Trophy size={48} className="text-white/10 mb-4" />
@@ -315,7 +327,6 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
             )}
           </div>
 
-          {/* 미션 가이드 문구 */}
           <div className="bg-white/5 border border-white/10 p-8 rounded-[1.5rem] text-center relative overflow-hidden">
              <div className="relative z-10 space-y-4">
                <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 rounded-full border border-blue-500/30">
@@ -341,7 +352,6 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
   );
 }
 
-// 공통 버튼 컴포넌트
 function StickButton({ label, color, icon, onClick, disabled = false }: any) {
   const colors: any = {
     blue: 'from-blue-500/40 to-blue-900/20 border-blue-400',
