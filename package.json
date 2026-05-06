@@ -2,13 +2,22 @@
   "name": "react-example",
   "private": true,
   "version": "0.0.0",
+  "main": "main.js",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.company.reactexample",
+    "win": {
+      "target": "nsis"
+    }
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
@@ -28,6 +37,8 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.21",
+    "electron": "^42.0.0",
+    "electron-builder": "^26.8.1",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
