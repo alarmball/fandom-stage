@@ -40,7 +40,8 @@ const INITIAL_KEYWORDS = [
 interface BingoCellProps {
   cell: CellData;
   onClick: () => void;
-  isBingo?: boolean;
+  cellIndex: number; // Add cellIndex
+  bingoAnimationInfo: { team: Team, bingoDetails: { line: number[], type: 'row' | 'col' | 'diag1' | 'diag2' }[] } | null; // Add bingoAnimationInfo
 }
 
 export default function App() {
@@ -60,8 +61,8 @@ export default function App() {
     turn: 'A'
   });
 
-  const [selectedCellId, setSelectedCellId] = useState<number | null>(null);
-  const [showBingoAnimation, setShowBingoAnimation] = useState<{ team: Team, lines: number[][] } | null>(null);
+  const [selectedCellId, setSelectedCellId] = useState<number | null>(null); // 선택된 셀 ID
+  const [showBingoAnimation, setShowBingoAnimation] = useState<{ team: Team, bingoDetails: { line: number[], type: 'row' | 'col' | 'diag1' | 'diag2' }[] } | null>(null); // 빙고 애니메이션 정보
 
   const checkBingo = useCallback((cells: CellData[], team: Team) => {
     const size = 5;
@@ -71,18 +72,25 @@ export default function App() {
       return s === CellStatus.TEAM_B || s === CellStatus.BOTH || s === CellStatus.LOCKED_B;
     };
     
+    const bingoDetails: { line: number[], type: 'row' | 'col' | 'diag1' | 'diag2' }[] = [];
+
+    // Check rows
     for (let i = 0; i < size; i++) {
       const row = Array.from({ length: size }, (_, j) => i * size + j);
-      if (row.every(idx => isOwner(cells[idx].status))) lines.push(row);
-      const col = Array.from({ length: size }, (_, j) => j * size + i);
-      if (col.every(idx => isOwner(cells[idx].status))) lines.push(col);
+      if (row.every(idx => isOwner(cells[idx].status))) bingoDetails.push({ line: row, type: 'row' });
     }
+    // Check columns
+    for (let i = 0; i < size; i++) {
+      const col = Array.from({ length: size }, (_, j) => j * size + i);
+      if (col.every(idx => isOwner(cells[idx].status))) bingoDetails.push({ line: col, type: 'col' });
+    }
+    // Check diagonals
     const diag1 = [0, 6, 12, 18, 24];
-    if (diag1.every(idx => isOwner(cells[idx].status))) lines.push(diag1);
+    if (diag1.every(idx => isOwner(cells[idx].status))) bingoDetails.push({ line: diag1, type: 'diag1' });
     const diag2 = [4, 8, 12, 16, 20];
-    if (diag2.every(idx => isOwner(cells[idx].status))) lines.push(diag2);
+    if (diag2.every(idx => isOwner(cells[idx].status))) bingoDetails.push({ line: diag2, type: 'diag2' });
     
-    return lines;
+    return bingoDetails;
   }, []);
 
   const handleCellClick = (id: number) => {
@@ -107,11 +115,11 @@ export default function App() {
       else if (resultType === 'LOCK_A') { cell.status = CellStatus.LOCKED_A; newAUsed = true; }
       else if (resultType === 'LOCK_B') { cell.status = CellStatus.LOCKED_B; newBUsed = true; }
 
-      const bingoA = checkBingo(newCells, 'A');
-      const bingoB = checkBingo(newCells, 'B');
+      const bingoA = checkBingo(newCells, 'A'); // 팀 A의 빙고 상세 정보
+      const bingoB = checkBingo(newCells, 'B'); // 팀 B의 빙고 상세 정보
 
-      if (bingoA.length > prev.teamABingoCount) setShowBingoAnimation({ team: 'A', lines: bingoA });
-      else if (bingoB.length > prev.teamBBingoCount) setShowBingoAnimation({ team: 'B', lines: bingoB });
+      if (bingoA.length > prev.teamABingoCount) setShowBingoAnimation({ team: 'A', bingoDetails: bingoA });
+      else if (bingoB.length > prev.teamBBingoCount) setShowBingoAnimation({ team: 'B', bingoDetails: bingoB });
 
       return {
         ...prev,
@@ -146,7 +154,7 @@ export default function App() {
       </motion.div>
 
       <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-6 relative z-10">
-        <TeamCard name="STARLIGHT" bingo={gameState.teamABingoCount} chanceUsed={gameState.teamAChanceUsed} isActive={gameState.turn === 'A'} color="blue" />
+        <TeamCard name="제1팀" bingo={gameState.teamABingoCount} chanceUsed={gameState.teamAChanceUsed} isActive={gameState.turn === 'A'} color="skyblue" />
 
         <div className="flex-1 flex flex-col items-center gap-4">
           <div className="bg-white/5 border-2 border-white/10 p-4 rounded-xl backdrop-blur-md">
@@ -155,7 +163,8 @@ export default function App() {
                 <BingoCell 
                   key={cell.id} 
                   cell={cell} 
-                  isBingo={showBingoAnimation?.lines.some(l => l.includes(cell.id))}
+                  cellIndex={cell.id} // 셀의 인덱스를 전달
+                  bingoAnimationInfo={showBingoAnimation} // 빙고 애니메이션 정보를 전달
                   onClick={() => handleCellClick(cell.id)} 
                 />
               ))}
@@ -163,7 +172,7 @@ export default function App() {
           </div>
         </div>
 
-        <TeamCard name="AURORA" bingo={gameState.teamBBingoCount} chanceUsed={gameState.teamBChanceUsed} isActive={gameState.turn === 'B'} color="pink" />
+        <TeamCard name="제2팀" bingo={gameState.teamBBingoCount} chanceUsed={gameState.teamBChanceUsed} isActive={gameState.turn === 'B'} color="orange" />
       </div>
 
       <AnimatePresence>
@@ -178,7 +187,7 @@ export default function App() {
         )}
         
         {showBingoAnimation && (
-          <BingoOverlay team={showBingoAnimation.team} />
+          <BingoOverlay team={showBingoAnimation.team} /> // BingoOverlay는 이제 team만 필요
         )}
       </AnimatePresence>
     </div>
@@ -276,12 +285,12 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
         </div>
 
         {/* 하단 제어 버튼 */}
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-          <StickButton label="A WIN" color="blue" icon={<Check />} onClick={() => onResult('A')} />
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 mt-4">
+          <StickButton label="A WIN" color="skyblue" icon={<Check />} onClick={() => onResult('A')} />
           <StickButton label="SHARED" color="purple" icon={<Crown />} onClick={() => onResult('BOTH')} />
-          <StickButton label="B WIN" color="pink" icon={<Check />} onClick={() => onResult('B')} />
+          <StickButton label="B WIN" color="orange" icon={<Check />} onClick={() => onResult('B')} />
           <StickButton label="FAIL" color="red" icon={<X />} onClick={() => onResult('FAIL')} />
-          <StickButton label="A LOCK" color="orange" icon={<Lock />} onClick={() => onResult('LOCK_A')} disabled={!canLockA} />
+          <StickButton label="A LOCK" color="skyblue" icon={<Lock />} onClick={() => onResult('LOCK_A')} disabled={!canLockA} />
           <StickButton label="B LOCK" color="orange" icon={<Lock />} onClick={() => onResult('LOCK_B')} disabled={!canLockB} />
         </div>
       </motion.div>
@@ -291,23 +300,23 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
 
 // 나머지 컴포넌트 (TeamCard, BingoCell, StickButton, BingoOverlay 등은 이전과 동일)
 function TeamCard({ name, bingo, chanceUsed, isActive, color }: any) {
-  const accentColor = color === 'blue' ? 'border-blue-500 shadow-blue-500/20' : 'border-pink-500 shadow-pink-500/20';
+  const accentColor = color === 'skyblue' ? 'border-sky-500 shadow-sky-500/20' : 'border-orange-500 shadow-orange-500/20';
   return (
     <motion.div layout className={`w-full lg:w-64 p-6 rounded-3xl flex flex-col gap-6 backdrop-blur-2xl transition-all duration-700 ${isActive ? `border-2 scale-105 ${accentColor} shadow-[0_0_40px_-10px_currentColor]` : 'border border-white/10 opacity-70'} bg-white/5 relative overflow-hidden`}>
       <div className="flex items-center justify-between relative z-10">
-        <div className={`p-2.5 rounded-xl ${color === 'blue' ? 'bg-blue-500' : 'bg-pink-500'}`}>
+        <div className={`p-2.5 rounded-xl ${color === 'skyblue' ? 'bg-sky-500' : 'bg-orange-500'}`}>
           <Trophy size={20} className="text-white" />
         </div>
-        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase ${isActive ? (color === 'blue' ? 'bg-blue-500' : 'bg-pink-500') : 'bg-white/10'}`}>
-          {isActive ? 'Live Playing' : 'Wait'}
+        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase ${isActive ? (color === 'skyblue' ? 'bg-sky-500' : 'bg-orange-500') : 'bg-white/10'}`}>
+          {isActive ? '진행중' : '대기중'}
         </div>
       </div>
       <div className="relative z-10">
-        <p className={`text-2xl font-black italic uppercase ${color === 'blue' ? 'text-blue-400' : 'text-pink-400'}`}>{name}</p>
+        <p className={`text-2xl font-black italic uppercase ${color === 'skyblue' ? 'text-sky-400' : 'text-orange-400'}`}>{name}</p>
       </div>
       <div className="bg-black/40 p-6 rounded-2xl border border-white/10 flex flex-col items-center justify-center relative z-10">
         <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">현재 빙고 개수</p>
-        <p className={`text-5xl font-black ${bingo > 0 ? (color === 'blue' ? 'text-blue-400' : 'text-pink-400') : 'text-white'}`}>{bingo}</p>
+        <p className={`text-5xl font-black ${bingo > 0 ? (color === 'skyblue' ? 'text-sky-400' : 'text-orange-400') : 'text-white'}`}>{bingo}</p>
       </div>
       <div className={`flex items-center justify-between p-4 rounded-xl border relative z-10 ${chanceUsed ? 'bg-white/5 opacity-50' : 'bg-white/10'}`}>
         <div className="flex items-center gap-2"><Lock size={14} /><span className="text-[10px] font-bold uppercase">자물쇠 찬스</span></div>
@@ -317,29 +326,75 @@ function TeamCard({ name, bingo, chanceUsed, isActive, color }: any) {
   );
 }
 
-function BingoCell({ cell, onClick, isBingo }: BingoCellProps) {
+function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellProps) {
   const getCellStyles = () => {
     switch (cell.status) {
-      case CellStatus.TEAM_A: return 'bg-blue-500/30 border-blue-400 text-blue-100';
-      case CellStatus.TEAM_B: return 'bg-pink-500/30 border-pink-400 text-pink-100';
+      case CellStatus.TEAM_A: return 'bg-sky-500/30 border-sky-400 text-sky-100';
+      case CellStatus.TEAM_B: return 'bg-orange-500/30 border-orange-400 text-orange-100';
       case CellStatus.BOTH: return 'relative overflow-hidden border-white/30 text-white';
       case CellStatus.FAIL: return 'bg-black/60 opacity-40 grayscale';
-      case CellStatus.LOCKED_A:
-      case CellStatus.LOCKED_B: return 'bg-orange-600/40 border-orange-400 text-orange-100';
+      case CellStatus.LOCKED_A: return 'bg-sky-600/40 border-sky-400 text-sky-100'; // Team A lock color
+      case CellStatus.LOCKED_B: return 'bg-orange-600/40 border-orange-400 text-orange-100'; // Team B lock color
       default: return 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10';
     }
   };
+
+  const bingoLineMatch = bingoAnimationInfo?.bingoDetails.find(detail => detail.line.includes(cellIndex));
+  const isPartOfBingo = !!bingoLineMatch;
+  const bingoTeam = isPartOfBingo ? bingoAnimationInfo?.team : null;
+  const bingoLineType = bingoLineMatch?.type;
+  const positionInLine = bingoLineMatch?.line.indexOf(cellIndex);
+
+  let initialProps: any = {};
+  let animateProps: any = {};
+  let exitProps: any = {};
+  let transitionProps: any = { duration: 0.3, ease: "easeOut" };
+  let highlightStyle: any = {};
+
+  if (isPartOfBingo && bingoTeam) {
+    const baseDelay = (positionInLine || 0) * 0.1; // Sequential delay for cells in a line
+    transitionProps.delay = baseDelay;
+
+    if (bingoLineType === 'row') {
+      initialProps = { width: 0, opacity: 0 };
+      animateProps = { width: '100%', opacity: 1 };
+      exitProps = { opacity: 0, transition: { delay: baseDelay + 0.3 } }; // Fade out after sweep
+      highlightStyle = { left: 0, top: 0, height: '100%' };
+    } else if (bingoLineType === 'col') {
+      initialProps = { height: 0, opacity: 0 };
+      animateProps = { height: '100%', opacity: 1 };
+      exitProps = { opacity: 0, transition: { delay: baseDelay + 0.3 } }; // Fade out after sweep
+      highlightStyle = { top: 0, left: 0, width: '100%' };
+    } else { // Diagonals or fallback to a general highlight
+      initialProps = { opacity: 0, scale: 0.8 };
+      animateProps = { opacity: 1, scale: 1 };
+      exitProps = { opacity: 0, scale: 1.2, transition: { delay: baseDelay + 0.3 } };
+      highlightStyle = { inset: 0 };
+    }
+  }
 
   return (
     <motion.button
       whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
       onClick={onClick}
-      className={`relative w-16 h-16 md:w-24 md:h-24 p-2 rounded-xl border-2 transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer ${getCellStyles()} ${isBingo ? 'z-20 ring-4 ring-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.5)]' : ''}`}
+      className={`relative w-16 h-16 md:w-24 md:h-24 p-2 rounded-xl border-2 transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer ${getCellStyles()}`}
     >
+      <AnimatePresence>
+        {isPartOfBingo && bingoTeam && (
+          <motion.div
+            initial={initialProps}
+            animate={animateProps}
+            exit={exitProps}
+            transition={transitionProps}
+            className={`absolute rounded-xl z-20 ${bingoTeam === 'A' ? 'bg-sky-400/50 ring-2 ring-sky-300' : 'bg-orange-400/50 ring-2 ring-orange-300'}`}
+            style={highlightStyle}
+          />
+        )}
+      </AnimatePresence>
       {cell.status === CellStatus.BOTH && (
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-blue-500/40" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
-          <div className="absolute inset-0 bg-pink-500/40" style={{ clipPath: 'polygon(100% 100%, 100% 0, 0 100%)' }} />
+          <div className="absolute inset-0 bg-sky-500/40" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
+          <div className="absolute inset-0 bg-orange-500/40" style={{ clipPath: 'polygon(100% 100%, 100% 0, 0 100%)' }} />
         </div>
       )}
       <span className="z-10 text-[10px] md:text-[12px] leading-tight uppercase italic break-keep">
@@ -350,45 +405,56 @@ function BingoCell({ cell, onClick, isBingo }: BingoCellProps) {
 }
 
 function StickButton({ label, color, icon, onClick, disabled = false }: any) {
-  const colors: any = {
-    blue: 'from-blue-500/40 to-blue-900/20 border-blue-400',
-    pink: 'from-pink-500/40 to-pink-900/20 border-pink-400',
-    purple: 'from-purple-500/40 to-purple-900/20 border-purple-400',
-    orange: 'from-orange-500/40 to-orange-900/20 border-orange-400',
-    red: 'from-red-500/40 to-red-900/20 border-red-400',
+  const colorConfigs: any = {
+    skyblue: { bg: 'from-sky-400 to-sky-600', glow: 'shadow-[0_0_20px_rgba(56,189,248,0.6)]', border: 'border-sky-300/50', text: 'text-sky-300' },
+    orange: { bg: 'from-orange-400 to-orange-600', glow: 'shadow-[0_0_20px_rgba(251,146,60,0.6)]', border: 'border-orange-300/50', text: 'text-orange-300' },
+    purple: { bg: 'from-purple-400 to-purple-600', glow: 'shadow-[0_0_20px_rgba(192,132,252,0.6)]', border: 'border-purple-300/50', text: 'text-purple-300' },
+    red: { bg: 'from-red-400 to-red-600', glow: 'shadow-[0_0_20px_rgba(248,113,113,0.6)]', border: 'border-red-300/50', text: 'text-red-300' },
   };
+  const cfg = colorConfigs[color] || colorConfigs.purple;
+
   return (
     <motion.button
-      whileHover={!disabled ? { scale: 1.05, y: -5 } : {}}
-      whileTap={!disabled ? { scale: 0.95 } : {}}
+      whileHover={!disabled ? { y: -12, rotate: [0, -5, 5, 0] } : {}}
+      whileTap={!disabled ? { scale: 0.9 } : {}}
       disabled={disabled}
       onClick={onClick}
-      className={`flex flex-col items-center gap-3 p-4 rounded-full border-2 bg-gradient-to-b transition-all ${disabled ? 'opacity-20 cursor-not-allowed' : `cursor-pointer ${colors[color]}`}`}
+      className={`flex flex-col items-center group relative transition-opacity ${disabled ? 'opacity-20 cursor-not-allowed' : 'cursor-pointer'}`}
     >
-      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-black/40 border border-white/20">{icon}</div>
-      <span className="text-[9px] font-black uppercase">{label}</span>
-      <div className="w-1 h-6 rounded-full bg-white/20" />
+      {/* 발광부 (Lightstick Head) */}
+      <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${cfg.bg} ${cfg.glow} border-2 ${cfg.border} flex items-center justify-center relative z-10 transition-all group-hover:brightness-125`}>
+        <div className="absolute inset-0 rounded-full bg-white/10 animate-pulse" />
+        <div className="text-white drop-shadow-lg scale-110">
+          {icon}
+        </div>
+      </div>
+
+      {/* 텍스트 (Label) */}
+      <span className={`mt-3 text-[10px] font-black italic tracking-tighter uppercase ${cfg.text} drop-shadow-md`}>
+        {label}
+      </span>
+
+      {/* 손잡이 (Handle) */}
+      <div className="mt-1 w-5 h-14 bg-gradient-to-b from-white/20 via-white/5 to-transparent rounded-b-2xl border-x border-b border-white/10 relative overflow-hidden">
+        <div className="absolute top-0 w-full h-[2px] bg-white/40" />
+        {/* 하단 버튼 디테일 */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-white/10" />
+      </div>
     </motion.button>
   );
 }
 
 function BingoOverlay({ team }: { team: Team }) {
   return (
-    <motion.div initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none overflow-hidden">
-      <motion.div
-        initial={{ x: '-150vw', skewX: '-25deg' }}
-        animate={{ x: '150vw' }}
-        transition={{ duration: 1.2, ease: "easeInOut" }}
-        className={`absolute top-0 bottom-0 w-[120vw] border-r-[15px] ${team === 'A' ? 'border-blue-300 bg-gradient-to-r from-transparent via-blue-600/50 to-blue-400 shadow-[20px_0_100px_rgba(59,130,246,0.8)]' : 'border-pink-300 bg-gradient-to-r from-transparent via-pink-600/50 to-pink-400 shadow-[20px_0_100px_rgba(236,72,153,0.8)]'}`}
-      />
+    <motion.div initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
       <motion.div 
         initial={{ scale: 0.3, opacity: 0, y: 50 }} 
         animate={{ scale: 1, opacity: 1, y: 0 }} 
         transition={{ delay: 0.3, type: 'spring', bounce: 0.6 }}
-        className={`relative z-10 text-6xl md:text-8xl font-black italic uppercase px-16 py-8 border-4 rounded-[3rem] backdrop-blur-md ${team === 'A' ? 'text-white bg-blue-900/40 border-blue-400 shadow-[0_0_80px_rgba(59,130,246,0.6)]' : 'text-white bg-pink-900/40 border-pink-400 shadow-[0_0_80px_rgba(236,72,153,0.6)]'}`}
+        className={`relative z-10 text-6xl md:text-8xl font-black italic uppercase px-16 py-8 border-4 rounded-[3rem] backdrop-blur-md ${team === 'A' ? 'text-white bg-sky-900/40 border-sky-400 shadow-[0_0_80px_rgba(14,165,233,0.6)]' : 'text-white bg-orange-900/40 border-orange-400 shadow-[0_0_80px_rgba(249,115,22,0.6)]'}`}
       >
         <div className="flex flex-col items-center gap-2">
-          <span className={`text-2xl tracking-[0.3em] ${team === 'A' ? 'text-blue-300' : 'text-pink-300'}`}>{team === 'A' ? 'STARLIGHT' : 'AURORA'}</span>
+          <span className={`text-2xl tracking-[0.3em] ${team === 'A' ? 'text-sky-300' : 'text-orange-300'}`}>{team === 'A' ? 'STARLIGHT' : 'AURORA'}</span>
           <span>BINGO!</span>
         </div>
       </motion.div>
