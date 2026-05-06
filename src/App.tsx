@@ -10,31 +10,31 @@ import { CellStatus, CellData, Team, GameState } from './types';
 
 // 1. 문제 구조
 const INITIAL_KEYWORDS = [
-  { keyword: '데뷔 앨범', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!', videoUrl: '', audioUrl: '' },
-  { keyword: '월드 투어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '음악 방송 1위', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '뮤비 조회수', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.', videoUrl: '', audioUrl: '' },
-  { keyword: '응원법', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '팬클럽 모집', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '솔로 데뷔', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '화보 촬영', description: '최근 화제가 된 패션 잡지 화보의 컨셉명을 맞히는 미션입니다.', videoUrl: '', audioUrl: '' },
-  { keyword: '콜라보', description: '타 아티스트와 협업한 곡 중 가장 높은 차트 순위를 기록한 곡은?', videoUrl: '', audioUrl: '' },
-  { keyword: '안무 영상', description: '안무 영상 조회수 1억 뷰를 가장 빠르게 달성한 곡을 맞혀보세요.', videoUrl: '', audioUrl: '' },
-  { keyword: 'OST 참여', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '광고 모델', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '앵콜 콘서트', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '미니 앨범', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!', videoUrl: '', audioUrl: '' },
-  { keyword: '라이브 방송', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?', videoUrl: '', audioUrl: '' },
-  { keyword: '시상식', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '챌린지', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '팬 미팅', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '시구/시타', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '포토카드', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '팝업 스토어', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '자체 콘텐츠', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: '', audioUrl: '' },
-  { keyword: '라디오 출연', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '공항 패션', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: '', audioUrl: '' },
-  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: '', audioUrl: '' },
+  { keyword: '데뷔 앨범', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '월드 투어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '음악 방송 1위', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '뮤비 조회수', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '응원법', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '팬클럽 모집', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '솔로 데뷔', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '화보 촬영', description: '최근 화제가 된 패션 잡지 화보의 컨셉명을 맞히는 미션입니다.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '콜라보', description: '타 아티스트와 협업한 곡 중 가장 높은 차트 순위를 기록한 곡은?', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '안무 영상', description: '안무 영상 조회수 1억 뷰를 가장 빠르게 달성한 곡을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: 'OST 참여', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '광고 모델', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '앵콜 콘서트', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '미니 앨범', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '라이브 방송', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '시상식', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '챌린지', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '팬 미팅', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '시구/시타', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '포토카드', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '팝업 스토어', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '자체 콘텐츠', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '라디오 출연', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '공항 패션', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
 ];
 
 interface BingoCellProps {
@@ -52,6 +52,7 @@ export default function App() {
       description: k.description,
       videoUrl: k.videoUrl,
       audioUrl: k.audioUrl, // 오디오 경로 매핑
+      images: k.images || [], // 이미지 배열 매핑
       status: CellStatus.EMPTY 
     })),
     teamABingoCount: 0,
@@ -271,6 +272,25 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
             <AudioPlayer src={cell.audioUrl} />
           )}
 
+          {/* 4. 이미지 갤러리 영역 (1~3장) */}
+          {cell.images && cell.images.length > 0 && (
+            <div className={`grid gap-4 ${
+              cell.images.length === 1 ? 'grid-cols-1' : 
+              cell.images.length === 2 ? 'grid-cols-2' : 
+              'grid-cols-3'
+            }`}>
+              {cell.images.map((imgUrl: string, idx: number) => (
+                <motion.div 
+                  key={idx}
+                  whileHover={{ scale: 1.05 }}
+                  className="relative aspect-video md:aspect-square rounded-2xl overflow-hidden border-2 border-white/10 bg-black/20"
+                >
+                  <img src={imgUrl} alt={`Mission ref ${idx}`} className="w-full h-full object-cover" />
+                </motion.div>
+              ))}
+            </div>
+          )}
+
           {/* 3. 미션 설명 영역 */}
           <div className="bg-white/5 border border-white/10 p-8 rounded-[1.5rem] text-center relative overflow-hidden">
              <div className="relative z-10 space-y-4">
@@ -397,9 +417,27 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           <div className="absolute inset-0 bg-orange-500/40" style={{ clipPath: 'polygon(100% 100%, 100% 0, 0 100%)' }} />
         </div>
       )}
-      <span className="z-10 text-[10px] md:text-[12px] leading-tight uppercase italic break-keep">
-        {cell.status.toString().includes('LOCKED') ? 'LOCKED' : cell.keyword}
-      </span>
+      {cell.status === CellStatus.LOCKED_A || cell.status === CellStatus.LOCKED_B ? (
+        <motion.div 
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="z-10 flex flex-col items-center gap-1"
+        >
+          <Lock 
+            size={28} 
+            className={`text-white animate-pulse ${
+              cell.status === CellStatus.LOCKED_A 
+                ? 'drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]' // A팀(하늘색) 자물쇠 광채
+                : 'drop-shadow-[0_0_15px_rgba(251,146,60,0.8)]' // B팀(주황색) 자물쇠 광채
+            }`} 
+          />
+          <span className="text-[10px] font-black uppercase tracking-widest opacity-90">Locked</span>
+        </motion.div>
+      ) : (
+        <span className="z-10 text-[10px] md:text-[12px] leading-tight uppercase italic break-keep">
+          {cell.keyword}
+        </span>
+      )}
     </motion.button>
   );
 }
