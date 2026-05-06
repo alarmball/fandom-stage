@@ -34,9 +34,8 @@ const INITIAL_KEYWORDS = [
   { keyword: '자체 콘텐츠', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '라디오 출연', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '공항 패션', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: '', audioUrl: '', images: ['/src/images/green_bg.jpg','/src/images/orange_bg.jpg','/src/images/skyblue_bg.jpg'] },
 ];
-
 interface BingoCellProps {
   cell: CellData;
   onClick: () => void;
