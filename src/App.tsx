@@ -8,33 +8,40 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Crown, X, Check, Trophy, Play, Pause, Volume2 } from 'lucide-react';
 import { CellStatus, CellData, Team, GameState } from './types';
 
+import greenBg from './images/green_bg.jpg';
+import orangeBg from './images/orange_bg.jpg';
+import skyblueBg from './images/skyblue_bg.jpg';
+
+import audio1 from './audios/1-108.mp3';
+import video1 from './videos/example.mp4';
+
 // 1. 문제 구조
 const INITIAL_KEYWORDS = [
-  { keyword: '데뷔 앨범', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '월드 투어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '음악 방송 1위', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '뮤비 조회수', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '응원법', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '팬클럽 모집', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '솔로 데뷔', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '화보 촬영', description: '최근 화제가 된 패션 잡지 화보의 컨셉명을 맞히는 미션입니다.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '콜라보', description: '타 아티스트와 협업한 곡 중 가장 높은 차트 순위를 기록한 곡은?', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '안무 영상', description: '안무 영상 조회수 1억 뷰를 가장 빠르게 달성한 곡을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: 'OST 참여', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '광고 모델', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '앵콜 콘서트', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '미니 앨범', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '라이브 방송', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '시상식', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '챌린지', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '팬 미팅', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '시구/시타', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '포토카드', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '팝업 스토어', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '자체 콘텐츠', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '라디오 출연', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '공항 패션', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '시즌 그리팅', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: '', audioUrl: '', images: ['/src/images/green_bg.jpg','/src/images/orange_bg.jpg','/src/images/skyblue_bg.jpg'] },
+  { keyword: '주인공', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '영단어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '사복', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '시상식', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '이벤트', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '낭독', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '노래제목', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '해석', description: '최근 화제가 된 패션 잡지 화보의 컨셉명을 맞히는 미션입니다.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: 'SNS', description: '타 아티스트와 협업한 곡 중 가장 높은 차트 순위를 기록한 곡은?', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '교복', description: '안무 영상 조회수 1억 뷰를 가장 빠르게 달성한 곡을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '산수', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '빈칸', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '?', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '소속사', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '유튜브', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '실루엣', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '한자', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '앵콜', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '노래방', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '눈물', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '듣기', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '편지', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '릴레이', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: video1, audioUrl: '', images: [] },
+  { keyword: '투어', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: '', audioUrl: audio1, images: [] },
+  { keyword: '1위', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [greenBg, orangeBg, skyblueBg] },
 ];
 interface BingoCellProps {
   cell: CellData;
