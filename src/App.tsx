@@ -9,6 +9,7 @@ import { Lock, Crown, X, Check, Trophy, Play, Pause, Volume2 } from 'lucide-reac
 import { CellStatus, CellData, Team, GameState } from './types';
 
 import background from './backgrounds/background.png';
+import question from './backgrounds/question_no_text.png';
 
 import cheer_a from './icons/cheer_icon1.png';
 import cheer_b from './icons/cheer_icon2.png';
@@ -115,7 +116,7 @@ export default function App() {
     setSelectedCellId(id);
   };
 
-  const processResult = (resultType: 'A' | 'B' | 'BOTH' | 'FAIL' | 'LOCK_A' | 'LOCK_B') => {
+  const processResult = (resultType: 'TEAM_A' | 'TEAM_B' | 'BOTH' | 'FAIL' | 'LOCKED_A' | 'LOCKED_B') => {
     if (selectedCellId === null) return;
 
     setGameState(prev => {
@@ -124,12 +125,12 @@ export default function App() {
       let newAUsed = prev.teamAChanceUsed;
       let newBUsed = prev.teamBChanceUsed;
 
-      if (resultType === 'A') cell.status = cell.status === CellStatus.TEAM_B ? CellStatus.BOTH : CellStatus.TEAM_A;
-      else if (resultType === 'B') cell.status = cell.status === CellStatus.TEAM_A ? CellStatus.BOTH : CellStatus.TEAM_B;
+      if (resultType === 'TEAM_A') cell.status = cell.status === CellStatus.TEAM_B ? CellStatus.BOTH : CellStatus.TEAM_A;
+      else if (resultType === 'TEAM_B') cell.status = cell.status === CellStatus.TEAM_A ? CellStatus.BOTH : CellStatus.TEAM_B;
       else if (resultType === 'BOTH') cell.status = CellStatus.BOTH;
       else if (resultType === 'FAIL') cell.status = CellStatus.FAIL;
-      else if (resultType === 'LOCK_A') { cell.status = CellStatus.LOCKED_A; newAUsed = true; }
-      else if (resultType === 'LOCK_B') { cell.status = CellStatus.LOCKED_B; newBUsed = true; }
+      else if (resultType === 'LOCKED_A') { cell.status = CellStatus.LOCKED_A; newAUsed = true; }
+      else if (resultType === 'LOCKED_B') { cell.status = CellStatus.LOCKED_B; newBUsed = true; }
 
       const bingoA = checkBingo(newCells, 'A'); // 팀 A의 빙고 상세 정보
       const bingoB = checkBingo(newCells, 'B'); // 팀 B의 빙고 상세 정보
@@ -227,6 +228,7 @@ export default function App() {
             onResult={processResult}
             canLockA={!gameState.teamAChanceUsed}
             canLockB={!gameState.teamBChanceUsed}
+            cheerIcons={{ cheer_a, cheer_b, cheer_both, cheer_fail, cheer_lock_a, cheer_lock_b }}
           />
         )}
         
@@ -281,11 +283,15 @@ function AudioPlayer({ src }: { src: string }) {
 }
 
 // 미션 모달 (오디오/비디오 지원)
-function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
+function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons }: any) {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl">
-      <motion.div initial={{ scale: 0.8, y: 30 }} animate={{ scale: 1, y: 0 }} className="w-full max-w-2xl bg-[#0a0a1a] border-2 border-white/20 rounded-[2.5rem] overflow-hidden p-8 md:p-10 relative">
-        
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, y: "-40%", x: "-50%" }}
+      animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
+      exit={{ opacity: 0 }}
+      className="fixed z-50 top-1/2 left-1/2 w-full max-w-2xl border-2 border-white/20 rounded-[2.5rem] overflow-hidden p-8 md:p-10 bg-cover bg-center bg-no-repeat shadow-2xl backdrop-blur-2xl"
+      style={{ backgroundImage: `url(${question})` }}
+    >
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-blue-500 to-pink-500 rounded-2xl shadow-lg shadow-purple-500/20">
@@ -348,15 +354,14 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB }: any) {
         </div>
 
         {/* 하단 제어 버튼 */}
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 mt-4">
-          <StickButton label="A WIN" color="skyblue" icon={<Check />} onClick={() => onResult('A')} />
-          <StickButton label="SHARED" color="purple" icon={<Crown />} onClick={() => onResult('BOTH')} />
-          <StickButton label="B WIN" color="orange" icon={<Check />} onClick={() => onResult('B')} />
-          <StickButton label="FAIL" color="red" icon={<X />} onClick={() => onResult('FAIL')} />
-          <StickButton label="A LOCK" color="skyblue" icon={<Lock />} onClick={() => onResult('LOCK_A')} disabled={!canLockA} />
-          <StickButton label="B LOCK" color="orange" icon={<Lock />} onClick={() => onResult('LOCK_B')} disabled={!canLockB} />
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 mt-4"> {/* Adjusted gap for better spacing */}
+          <StickButton label="A WIN" color="skyblue" icon={cheerIcons.cheer_a} onClick={() => onResult('TEAM_A')} />
+          <StickButton label="SHARED" color="purple" icon={cheerIcons.cheer_both} onClick={() => onResult('BOTH')} />
+          <StickButton label="B WIN" color="orange" icon={cheerIcons.cheer_b} onClick={() => onResult('TEAM_B')} />
+          <StickButton label="FAIL" color="red" icon={cheerIcons.cheer_fail} onClick={() => onResult('FAIL')} />
+          <StickButton label="A LOCK" color="skyblue" icon={cheerIcons.cheer_lock_a} onClick={() => onResult('LOCKED_A')} disabled={!canLockA} />
+          <StickButton label="B LOCK" color="orange" icon={cheerIcons.cheer_lock_b} onClick={() => onResult('LOCKED_B')} disabled={!canLockB} />
         </div>
-      </motion.div>
     </motion.div>
   );
 }
@@ -442,6 +447,13 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
       onClick={onClick}
       className={`relative w-[200px] h-[200px] p-8 rounded-xl border transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer shadow-lg ${getCellStyles()}`}
     >
+      {/* 질문 배경 이미지 추가 */}
+      <img 
+        src={question} 
+        alt="" 
+        className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none rounded-xl" 
+      />
+
       <AnimatePresence>
         {isPartOfBingo && bingoTeam && (
           <motion.div
@@ -466,9 +478,10 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           animate={{ scale: 1, opacity: 1 }}
           className="z-10 flex flex-col items-center gap-1"
         >
-          <Lock 
-            size={32} 
-            className={`text-white animate-pulse ${
+          <img
+            src={cell.status === CellStatus.LOCKED_A ? cheer_lock_a : cheer_lock_b}
+            alt="Locked"
+            className={`w-8 h-8 object-contain animate-pulse ${
               cell.status === CellStatus.LOCKED_A 
                 ? 'drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]' // A팀(하늘색) 자물쇠 광채
                 : 'drop-shadow-[0_0_15px_rgba(251,146,60,0.8)]' // B팀(주황색) 자물쇠 광채
@@ -485,42 +498,24 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
   );
 }
 
-function StickButton({ label, color, icon, onClick, disabled = false }: any) {
-  const colorConfigs: any = {
-    skyblue: { bg: 'from-sky-400 to-sky-600', glow: 'shadow-[0_0_20px_rgba(56,189,248,0.6)]', border: 'border-sky-300/50', text: 'text-sky-300' },
-    orange: { bg: 'from-orange-400 to-orange-600', glow: 'shadow-[0_0_20px_rgba(251,146,60,0.6)]', border: 'border-orange-300/50', text: 'text-orange-300' },
-    purple: { bg: 'from-purple-400 to-purple-600', glow: 'shadow-[0_0_20px_rgba(192,132,252,0.6)]', border: 'border-purple-300/50', text: 'text-purple-300' },
-    red: { bg: 'from-red-400 to-red-600', glow: 'shadow-[0_0_20px_rgba(248,113,113,0.6)]', border: 'border-red-300/50', text: 'text-red-300' },
-  };
-  const cfg = colorConfigs[color] || colorConfigs.purple;
-
+function StickButton({ label, color, icon, onClick, disabled = false }: {
+  label: string; color: string; icon: React.ReactNode | string; onClick: () => void; disabled?: boolean;
+}) {
   return (
     <motion.button
-      whileHover={!disabled ? { y: -12, rotate: [0, -5, 5, 0] } : {}}
-      whileTap={!disabled ? { scale: 0.9 } : {}}
+      whileHover={!disabled ? { scale: 1.15 } : {}}
+      whileTap={!disabled ? { scale: 0.95 } : {}}
       disabled={disabled}
       onClick={onClick}
-      className={`flex flex-col items-center group relative transition-opacity ${disabled ? 'opacity-20 cursor-not-allowed' : 'cursor-pointer'}`}
+      className={`relative flex items-center justify-center transition-opacity ${disabled ? 'opacity-20 cursor-not-allowed' : 'cursor-pointer'}`}
     >
-      {/* 발광부 (Lightstick Head) */}
-      <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${cfg.bg} ${cfg.glow} border-2 ${cfg.border} flex items-center justify-center relative z-10 transition-all group-hover:brightness-125`}>
-        <div className="absolute inset-0 rounded-full bg-white/10 animate-pulse" />
-        <div className="text-white drop-shadow-lg scale-110">
+      {typeof icon === 'string' ? (
+        <img src={icon} alt={label} className="w-32 h-32 md:w-48 md:h-48 object-contain drop-shadow-2xl" />
+      ) : (
+        <div className="text-white drop-shadow-lg scale-150">
           {icon}
         </div>
-      </div>
-
-      {/* 텍스트 (Label) */}
-      <span className={`mt-3 text-[10px] font-black italic tracking-tighter uppercase ${cfg.text} drop-shadow-md`}>
-        {label}
-      </span>
-
-      {/* 손잡이 (Handle) */}
-      <div className="mt-1 w-5 h-14 bg-gradient-to-b from-white/20 via-white/5 to-transparent rounded-b-2xl border-x border-b border-white/10 relative overflow-hidden">
-        <div className="absolute top-0 w-full h-[2px] bg-white/40" />
-        {/* 하단 버튼 디테일 */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-white/10" />
-      </div>
+      )}
     </motion.button>
   );
 }
