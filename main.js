@@ -8,8 +8,8 @@ const __dirname = path.dirname(__filename);
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 1920,
+    height: 1080,
     webPreferences: {
       // Vite로 빌드된 React 앱이 정상 작동하려면 아래 설정이 안전합니다.
       nodeIntegration: false, 

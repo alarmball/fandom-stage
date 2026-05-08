@@ -8,6 +8,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Crown, X, Check, Trophy, Play, Pause, Volume2 } from 'lucide-react';
 import { CellStatus, CellData, Team, GameState } from './types';
 
+import background from './backgrounds/background.png';
+
+import cheer_a from './icons/cheer_icon1.png';
+import cheer_b from './icons/cheer_icon2.png';
+import cheer_both from './icons/cheer_icon3.png';
+import cheer_fail from './icons/cheer_icon4.png';
+import cheer_lock_a from './icons/cheer_icon4.png';
+import cheer_lock_b from './icons/cheer_icon4.png';
+
 import greenBg from './images/green_bg.jpg';
 import orangeBg from './images/orange_bg.jpg';
 import skyblueBg from './images/skyblue_bg.jpg';
@@ -146,39 +155,67 @@ export default function App() {
       const timer = setTimeout(() => setShowBingoAnimation(null), 4000);
       return () => clearTimeout(timer);
     }
+
+    let startX = 0;
+    let startY = 0;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      startX = e.clientX;
+      startY = e.clientY;
+    };
+
+    const handleMouseUp = (e: MouseEvent) => {
+      const endX = e.clientX;
+      const endY = e.clientY;
+
+      const width = Math.abs(endX - startX);
+      const height = Math.abs(endY - startY);
+
+      // 드래그 거리가 거의 없는 단순 클릭은 무시 (5px 이상일 때만 로그)
+      if (width > 5 || height > 5) {
+        console.log(`%c📏 Measured Area: ${width}px x ${height}px`, "color: #00ff00; font-weight: bold;");
+        console.log(`Details: Width: ${width}, Height: ${height}, Start: (${startX}, ${startY}), End: (${endX}, ${endY})`);
+      }
+    };
+
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
   }, [showBingoAnimation]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a1a] text-white p-4 flex flex-col items-center justify-center overflow-hidden relative">
-      {/* 배경 장식 */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#3d1a52,transparent_40%),radial-gradient(circle_at_0%_50%,#1a3a52,transparent_30%),radial-gradient(circle_at_100%_50%,#521a3a,transparent_30%)] opacity-50 pointer-events-none" />
+    <div 
+      className="min-h-screen text-white p-4 flex flex-col items-center justify-center overflow-hidden relative bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${background})` }}
+    >
 
-      <motion.div initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mb-8 text-center relative z-10">
-        <span className="text-xs tracking-[0.5em] text-blue-400 font-bold uppercase mb-2 block">Fandom Stage Finals</span>
-        <h1 className="text-4xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 tracking-tighter">
-          팬덤 빙고 대결
-        </h1>
-      </motion.div>
-
-      <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-6 relative z-10">
+      {/* 메인 콘텐츠 컨테이너: 레이아웃 유지를 위한 기본 속성만 남김 */}
+      <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-4 relative z-10 px-6 md:px-12">
+        {/* 제1팀 카드 */}
         <TeamCard name="제1팀" bingo={gameState.teamABingoCount} chanceUsed={gameState.teamAChanceUsed} isActive={gameState.turn === 'A'} color="skyblue" />
 
-        <div className="flex-1 flex flex-col items-center gap-4">
-          <div className="bg-white/5 border-2 border-white/10 p-4 rounded-xl backdrop-blur-md">
-            <div className="grid grid-cols-5 gap-2 md:gap-3">
+        {/* 중앙 빙고 보드 영역 */}
+        <div className="flex-1 flex flex-col items-center gap-10">
+          <div className="w-[1320px] h-[1100px] relative z-10 flex items-center justify-center">
+            <div className="grid grid-cols-5 gap-4">
               {gameState.cells.map(cell => (
-                <BingoCell 
-                  key={cell.id} 
-                  cell={cell} 
-                  cellIndex={cell.id} // 셀의 인덱스를 전달
-                  bingoAnimationInfo={showBingoAnimation} // 빙고 애니메이션 정보를 전달
-                  onClick={() => handleCellClick(cell.id)} 
+                <BingoCell
+                  key={cell.id}
+                  cell={cell}
+                  cellIndex={cell.id}
+                  bingoAnimationInfo={showBingoAnimation}
+                  onClick={() => handleCellClick(cell.id)}
                 />
               ))}
             </div>
           </div>
         </div>
 
+        {/* 제2팀 카드 */}
         <TeamCard name="제2팀" bingo={gameState.teamBBingoCount} chanceUsed={gameState.teamBChanceUsed} isActive={gameState.turn === 'B'} color="orange" />
       </div>
 
@@ -355,13 +392,13 @@ function TeamCard({ name, bingo, chanceUsed, isActive, color }: any) {
 function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellProps) {
   const getCellStyles = () => {
     switch (cell.status) {
-      case CellStatus.TEAM_A: return 'bg-sky-500/30 border-sky-400 text-sky-100';
-      case CellStatus.TEAM_B: return 'bg-orange-500/30 border-orange-400 text-orange-100';
-      case CellStatus.BOTH: return 'relative overflow-hidden border-white/30 text-white';
+      case CellStatus.TEAM_A: return 'bg-sky-500/20 border-sky-400/50 text-sky-100 backdrop-blur-md shadow-[0_0_15px_rgba(56,189,248,0.2)]';
+      case CellStatus.TEAM_B: return 'bg-orange-500/20 border-orange-400/50 text-orange-100 backdrop-blur-md shadow-[0_0_15px_rgba(251,146,60,0.2)]';
+      case CellStatus.BOTH: return 'relative overflow-hidden border-white/20 text-white backdrop-blur-md';
       case CellStatus.FAIL: return 'bg-black/60 opacity-40 grayscale';
-      case CellStatus.LOCKED_A: return 'bg-sky-600/40 border-sky-400 text-sky-100'; // Team A lock color
-      case CellStatus.LOCKED_B: return 'bg-orange-600/40 border-orange-400 text-orange-100'; // Team B lock color
-      default: return 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10';
+      case CellStatus.LOCKED_A: return 'bg-sky-600/30 border-sky-400/40 text-sky-100 backdrop-blur-md';
+      case CellStatus.LOCKED_B: return 'bg-orange-600/30 border-orange-400/40 text-orange-100 backdrop-blur-md';
+      default: return 'bg-white/[0.03] border-white/[0.05] text-white/60 hover:bg-white/[0.08] hover:border-white/20 backdrop-blur-sm';
     }
   };
 
@@ -401,9 +438,9 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
 
   return (
     <motion.button
-      whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className={`relative w-16 h-16 md:w-24 md:h-24 p-2 rounded-xl border-2 transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer ${getCellStyles()}`}
+      className={`relative w-[200px] h-[200px] p-8 rounded-xl border transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer shadow-lg ${getCellStyles()}`}
     >
       <AnimatePresence>
         {isPartOfBingo && bingoTeam && (
@@ -430,7 +467,7 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           className="z-10 flex flex-col items-center gap-1"
         >
           <Lock 
-            size={28} 
+            size={32} 
             className={`text-white animate-pulse ${
               cell.status === CellStatus.LOCKED_A 
                 ? 'drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]' // A팀(하늘색) 자물쇠 광채
@@ -440,7 +477,7 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           <span className="text-[10px] font-black uppercase tracking-widest opacity-90">Locked</span>
         </motion.div>
       ) : (
-        <span className="z-10 text-[10px] md:text-[12px] leading-tight uppercase italic break-keep">
+        <span className="z-10 text-2xl md:text-3xl leading-tight uppercase italic break-keep">
           {cell.keyword}
         </span>
       )}
