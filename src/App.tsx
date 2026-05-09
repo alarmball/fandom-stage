@@ -291,11 +291,16 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
       initial={{ opacity: 0, scale: 0.8, y: "-40%", x: "-50%" }}
       animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
       exit={{ opacity: 0 }}
-      className="fixed z-50 top-1/2 left-1/2 w-[66vw] max-w-[1020px] aspect-[7/3] flex flex-col overflow-hidden p-6 md:p-9 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl"
+      className="fixed z-50 top-1/2 left-1/2 w-[73vw] max-w-[1122px] aspect-[10/9] flex flex-col overflow-hidden p-8 md:p-11 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl max-h-[95vh]"
       style={{ backgroundImage: `url(${question})` }}
     >
+        {/* 중앙 보라색 원형 그라데이션 효과 */}
+        <div 
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.3)_0%,transparent_75%)] pointer-events-none z-0" 
+        />
+
         <div className="relative flex items-center justify-center mb-8 w-full">
-          <h2 className="text-[2.5rem] font-bold font-gulim uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full px-12">
+          <h2 className="text-[2.75rem] font-bold font-gulim uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full px-12">
             {cell.keyword}
           </h2>
           <button onClick={onClose} className="absolute right-0 p-3 hover:bg-white/10 rounded-2xl transition-all">
@@ -339,13 +344,13 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           )}
 
           {/* 3. 미션 설명 영역 */}
-          <h1 className="text-xl md:text-[1.8rem] font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] max-w-4xl mx-auto">
+          <h1 className="text-2xl md:text-[2rem] font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] max-w-4xl mx-auto">
             {cell.description}
           </h1>
         </div>
 
         {/* 하단 제어 버튼 */}
-        <div className="grid grid-cols-6 gap-4 mt-auto mx-auto w-full">
+        <div className="grid grid-cols-6 gap-2 mt-auto mx-auto w-full pb-4">
           <StickButton label="A WIN" color="skyblue" icon={cheerIcons.cheer_a} onClick={() => onResult('TEAM_A')} />
           <StickButton label="SHARED" color="purple" icon={cheerIcons.cheer_both} onClick={() => onResult('BOTH')} />
           <StickButton label="B WIN" color="orange" icon={cheerIcons.cheer_b} onClick={() => onResult('TEAM_B')} />
@@ -499,9 +504,9 @@ function StickButton({ label, color, icon, onClick, disabled = false }: {
       className={`relative flex items-center justify-center transition-opacity ${disabled ? 'opacity-20 cursor-not-allowed' : 'cursor-pointer'}`}
     >
       {typeof icon === 'string' ? (
-        <img src={icon} alt={label} className="w-[100px] h-[100px] md:w-[145px] md:h-[145px] object-contain drop-shadow-2xl" />
+        <img src={icon} alt={label} className="w-[60px] h-[60px] md:w-[90px] md:h-[90px] object-contain drop-shadow-2xl" />
       ) : (
-        <div className="text-white drop-shadow-lg scale-100">
+        <div className="text-white drop-shadow-lg scale-[0.7]">
           {icon}
         </div>
       )}
