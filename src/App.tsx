@@ -15,8 +15,8 @@ import cheer_a from './icons/cheer_icon1.png';
 import cheer_b from './icons/cheer_icon2.png';
 import cheer_both from './icons/cheer_icon3.png';
 import cheer_fail from './icons/cheer_icon4.png';
-import cheer_lock_a from './icons/cheer_icon4.png';
-import cheer_lock_b from './icons/cheer_icon4.png';
+import cheer_lock_a from './icons/cheer_icon5.png';
+import cheer_lock_b from './icons/cheer_icon6.png';
 
 import greenBg from './images/green_bg.jpg';
 import orangeBg from './images/orange_bg.jpg';
@@ -190,7 +190,7 @@ export default function App() {
 
   return (
     <div 
-      className="min-h-screen text-white p-4 flex flex-col items-center justify-center overflow-hidden relative bg-cover bg-center bg-no-repeat"
+      className="min-h-screen text-white p-4 flex flex-col items-center justify-center overflow-hidden relative bg-[length:100%_100%] bg-no-repeat"
       style={{ backgroundImage: `url(${background})` }}
     >
 
@@ -201,10 +201,10 @@ export default function App() {
 
         {/* 중앙 빙고 보드 영역 */}
         <main className="flex-1 relative flex items-center justify-center" data-id="root">
-          <div className="relative mx-auto w-full max-w-[80vh] aspect-square z-10 flex items-center justify-center p-4">
+          <div className="relative mx-auto w-full max-w-[88vh] aspect-square z-10 flex items-center justify-center p-4 bg-black shadow-[0_0_60px_-15px_rgba(0,0,0,1)] border border-white/5 animate-fade-up">
             
             {/* 적응형 빙고 그리드 */}
-            <div className="grid grid-cols-5 gap-3 md:gap-4 w-full h-full relative z-20">
+            <div className="grid grid-cols-5 gap-3 md:gap-5 w-full h-full relative z-20">
                 {gameState.cells.map(cell => (
                   <BingoCell
                     key={cell.id}
@@ -291,16 +291,16 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
       initial={{ opacity: 0, scale: 0.8, y: "-40%", x: "-50%" }}
       animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
       exit={{ opacity: 0 }}
-      className="fixed z-50 top-1/2 left-1/2 w-full max-w-6xl rounded-[2.5rem] overflow-hidden p-8 md:p-10 bg-cover bg-center bg-no-repeat shadow-2xl backdrop-blur-2xl"
+      className="fixed z-50 top-1/2 left-1/2 w-full max-w-6xl overflow-hidden p-8 md:p-10 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl"
       style={{ backgroundImage: `url(${question})` }}
     >
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <div>
-              <p className="text-2xl font-black italic uppercase text-white">{cell.keyword}</p>
-            </div>
-          </div>
-          <button onClick={onClose} className="p-3 hover:bg-white/10 rounded-2xl transition-all"><X /></button>
+        <div className="relative flex items-center justify-center mb-12 w-full">
+          <h2 className="text-6xl font-bold font-gulim uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full">
+            {cell.keyword}
+          </h2>
+          <button onClick={onClose} className="absolute right-0 p-3 hover:bg-white/10 rounded-2xl transition-all">
+            <X size={48} />
+          </button>
         </div>
 
         <div className="space-y-6 mb-10">
@@ -339,20 +339,13 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           )}
 
           {/* 3. 미션 설명 영역 */}
-          <div className="bg-white/5 p-8 rounded-[1.5rem] text-center relative overflow-hidden max-w-3xl mx-auto">
-             <div className="relative z-10 space-y-4">
-               <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 rounded-full border border-blue-500/30">
-                  <span className="text-[9px] font-black uppercase text-blue-400 tracking-tighter">Mission Instruction</span>
-               </div>
-               <h4 className="text-xl md:text-2xl font-black italic text-white leading-tight break-keep">
-                 {cell.description}
-               </h4>
-             </div>
-          </div>
+          <h1 className="text-4xl md:text-5xl font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)]">
+            {cell.description}
+          </h1>
         </div>
 
         {/* 하단 제어 버튼 */}
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 mt-4"> {/* Adjusted gap for better spacing */}
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-2 mx-auto max-w-5xl">
           <StickButton label="A WIN" color="skyblue" icon={cheerIcons.cheer_a} onClick={() => onResult('TEAM_A')} />
           <StickButton label="SHARED" color="purple" icon={cheerIcons.cheer_both} onClick={() => onResult('BOTH')} />
           <StickButton label="B WIN" color="orange" icon={cheerIcons.cheer_b} onClick={() => onResult('TEAM_B')} />
@@ -378,7 +371,7 @@ function TeamCard({ name, bingo, chanceUsed, isActive, color }: any) {
         </div>
       </div>
       <div className="relative z-10">
-        <p className={`text-2xl font-black italic uppercase ${color === 'skyblue' ? 'text-sky-400' : 'text-orange-400'}`}>{name}</p>
+        <p className={`text-2xl font-bold font-gulim uppercase drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] ${color === 'skyblue' ? 'text-sky-400' : 'text-orange-400'}`}>{name}</p>
       </div>
       <div className="bg-black/40 p-6 rounded-2xl border border-white/10 flex flex-col items-center justify-center relative z-10">
         <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">현재 빙고 개수</p>
@@ -397,11 +390,11 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
     switch (cell.status) {
       case CellStatus.TEAM_A: return 'bg-sky-500/20 border-sky-400/50 text-sky-100 backdrop-blur-md shadow-[0_0_15px_rgba(56,189,248,0.2)]';
       case CellStatus.TEAM_B: return 'bg-orange-500/20 border-orange-400/50 text-orange-100 backdrop-blur-md shadow-[0_0_15px_rgba(251,146,60,0.2)]';
-      case CellStatus.BOTH: return 'relative overflow-hidden border-white/20 text-white backdrop-blur-md';
+      case CellStatus.BOTH: return 'relative overflow-hidden border-white/60 text-white backdrop-blur-md';
       case CellStatus.FAIL: return 'bg-black/60 opacity-40 grayscale';
       case CellStatus.LOCKED_A: return 'bg-sky-600/30 border-sky-400/40 text-sky-100 backdrop-blur-md';
       case CellStatus.LOCKED_B: return 'bg-orange-600/30 border-orange-400/40 text-orange-100 backdrop-blur-md';
-      default: return 'bg-white/[0.03] border-white/[0.05] text-white/60 hover:bg-white/[0.08] hover:border-white/20 backdrop-blur-sm';
+      default: return 'bg-white/[0.03] border-white/40 text-white/60 hover:bg-white/[0.08] hover:border-white/80 backdrop-blur-sm';
     }
   };
 
@@ -441,10 +434,14 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
 
   return (
     <motion.button
-      whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}
+      initial={{ scale: 1.05, y: -2 }}
+      animate={{ scale: 1.05, y: -2 }}
+      whileHover={{ scale: 1.12, y: -8 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className={`relative w-full aspect-square p-2 md:p-6 rounded-xl border-2 transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer shadow-2xl overflow-hidden ${getCellStyles()}`}
+      className={`relative w-full aspect-square p-6 rounded-xl border-2 transition-all font-bold font-gulim flex flex-col items-center justify-center text-center cursor-pointer shadow-2xl overflow-hidden -top-4 ${getCellStyles()}`}
     >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.3)_0%,transparent_75%)] pointer-events-none z-0" />
 
       <AnimatePresence>
         {isPartOfBingo && bingoTeam && (
@@ -482,7 +479,7 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           <span className="text-[10px] md:text-xs font-black uppercase tracking-widest opacity-90">Locked</span>
         </motion.div>
       ) : (
-        <span className="z-10 text-sm md:text-2xl lg:text-3xl leading-tight uppercase italic break-keep drop-shadow-md">
+        <span className="z-10 text-sm md:text-2xl lg:text-3xl leading-tight uppercase break-keep drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
           {cell.keyword}
         </span>
       )}
@@ -502,9 +499,9 @@ function StickButton({ label, color, icon, onClick, disabled = false }: {
       className={`relative flex items-center justify-center transition-opacity ${disabled ? 'opacity-20 cursor-not-allowed' : 'cursor-pointer'}`}
     >
       {typeof icon === 'string' ? (
-        <img src={icon} alt={label} className="w-[250px] h-[250px] md:w-[400px] md:h-[400px] object-contain drop-shadow-2xl" />
+        <img src={icon} alt={label} className="w-[120px] h-[120px] md:w-[180px] md:h-[180px] object-contain drop-shadow-2xl" />
       ) : (
-        <div className="text-white drop-shadow-lg scale-150">
+        <div className="text-white drop-shadow-lg scale-110">
           {icon}
         </div>
       )}
@@ -519,7 +516,7 @@ function BingoOverlay({ team }: { team: Team }) {
         initial={{ scale: 0.3, opacity: 0, y: 50 }} 
         animate={{ scale: 1, opacity: 1, y: 0 }} 
         transition={{ delay: 0.3, type: 'spring', bounce: 0.6 }}
-        className={`relative z-10 text-6xl md:text-8xl font-black italic uppercase px-16 py-8 border-4 rounded-[3rem] backdrop-blur-md ${team === 'A' ? 'text-white bg-sky-900/40 border-sky-400 shadow-[0_0_80px_rgba(14,165,233,0.6)]' : 'text-white bg-orange-900/40 border-orange-400 shadow-[0_0_80px_rgba(249,115,22,0.6)]'}`}
+        className={`relative z-10 text-6xl md:text-8xl font-bold font-gulim uppercase px-16 py-8 border-4 rounded-[3rem] backdrop-blur-md ${team === 'A' ? 'text-white bg-sky-900/40 border-sky-400 shadow-[0_0_80px_rgba(14,165,233,0.6)]' : 'text-white bg-orange-900/40 border-orange-400 shadow-[0_0_80px_rgba(249,115,22,0.6)]'}`}
       >
         <div className="flex flex-col items-center gap-2">
           <span className={`text-2xl tracking-[0.3em] ${team === 'A' ? 'text-sky-300' : 'text-orange-300'}`}>{team === 'A' ? 'STARLIGHT' : 'AURORA'}</span>

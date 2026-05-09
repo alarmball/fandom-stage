@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        gulim: ['Gulim', 'Dotum', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };
