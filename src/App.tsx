@@ -308,18 +308,20 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           </button>
         </div>
 
+        {/* 1. 미션 설명 영역 */}
+        <h1 className="text-2xl md:text-[2rem] font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] max-w-4xl mx-auto">
+          {cell.description}
+        </h1>
+
         <div className="space-y-6 mb-6 flex-1 flex flex-col justify-center overflow-y-auto px-10">
-          {/* 1. 비디오 영역 */}
+          {/* 2. 비디오 영역 */}
           {cell.videoUrl && (
             <div className="relative aspect-video max-w-3xl mx-auto w-full rounded-[1.5rem] overflow-hidden border-2 border-white/10 bg-black">
               <video src={cell.videoUrl} className="w-full h-full object-cover" autoPlay loop muted controls />
-              <div className="absolute top-4 left-4 px-3 py-1 bg-red-600 text-[10px] font-black rounded-md flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" /> LIVE VIDEO
-              </div>
             </div>
           )}
 
-          {/* 2. 오디오 영역 */}
+          {/* 3. 오디오 영역 */}
           {cell.audioUrl && (
             <AudioPlayer src={cell.audioUrl} />
           )}
@@ -342,11 +344,6 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
               ))}
             </div>
           )}
-
-          {/* 3. 미션 설명 영역 */}
-          <h1 className="text-2xl md:text-[2rem] font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] max-w-4xl mx-auto">
-            {cell.description}
-          </h1>
         </div>
 
         {/* 하단 제어 버튼 */}
