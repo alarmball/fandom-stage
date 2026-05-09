@@ -200,21 +200,23 @@ export default function App() {
         <TeamCard name="제1팀" bingo={gameState.teamABingoCount} chanceUsed={gameState.teamAChanceUsed} isActive={gameState.turn === 'A'} color="skyblue" />
 
         {/* 중앙 빙고 보드 영역 */}
-        <div className="flex-1 flex flex-col items-center gap-10">
-          <div className="w-[1320px] h-[1100px] relative z-10 flex items-center justify-center">
-            <div className="grid grid-cols-5 gap-4">
-              {gameState.cells.map(cell => (
-                <BingoCell
-                  key={cell.id}
-                  cell={cell}
-                  cellIndex={cell.id}
-                  bingoAnimationInfo={showBingoAnimation}
-                  onClick={() => handleCellClick(cell.id)}
-                />
-              ))}
+        <main className="flex-1 relative flex items-center justify-center" data-id="root">
+          <div className="relative mx-auto w-full max-w-[80vh] aspect-square z-10 flex items-center justify-center p-4">
+            
+            {/* 적응형 빙고 그리드 */}
+            <div className="grid grid-cols-5 gap-3 md:gap-4 w-full h-full relative z-20">
+                {gameState.cells.map(cell => (
+                  <BingoCell
+                    key={cell.id}
+                    cell={cell}
+                    cellIndex={cell.id}
+                    bingoAnimationInfo={showBingoAnimation}
+                    onClick={() => handleCellClick(cell.id)}
+                  />
+                ))}
             </div>
           </div>
-        </div>
+        </main>
 
         {/* 제2팀 카드 */}
         <TeamCard name="제2팀" bingo={gameState.teamBBingoCount} chanceUsed={gameState.teamBChanceUsed} isActive={gameState.turn === 'B'} color="orange" />
@@ -289,16 +291,12 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
       initial={{ opacity: 0, scale: 0.8, y: "-40%", x: "-50%" }}
       animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
       exit={{ opacity: 0 }}
-      className="fixed z-50 top-1/2 left-1/2 w-full max-w-2xl border-2 border-white/20 rounded-[2.5rem] overflow-hidden p-8 md:p-10 bg-cover bg-center bg-no-repeat shadow-2xl backdrop-blur-2xl"
+      className="fixed z-50 top-1/2 left-1/2 w-full max-w-6xl rounded-[2.5rem] overflow-hidden p-8 md:p-10 bg-cover bg-center bg-no-repeat shadow-2xl backdrop-blur-2xl"
       style={{ backgroundImage: `url(${question})` }}
     >
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-blue-500 to-pink-500 rounded-2xl shadow-lg shadow-purple-500/20">
-              <Trophy className="text-white" />
-            </div>
             <div>
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-white/40">Mission Module</h4>
               <p className="text-2xl font-black italic uppercase text-white">{cell.keyword}</p>
             </div>
           </div>
@@ -341,7 +339,7 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           )}
 
           {/* 3. 미션 설명 영역 */}
-          <div className="bg-white/5 border border-white/10 p-8 rounded-[1.5rem] text-center relative overflow-hidden">
+          <div className="bg-white/5 p-8 rounded-[1.5rem] text-center relative overflow-hidden max-w-3xl mx-auto">
              <div className="relative z-10 space-y-4">
                <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 rounded-full border border-blue-500/30">
                   <span className="text-[9px] font-black uppercase text-blue-400 tracking-tighter">Mission Instruction</span>
@@ -445,14 +443,8 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
     <motion.button
       whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className={`relative w-[200px] h-[200px] p-8 rounded-xl border transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer shadow-lg ${getCellStyles()}`}
+      className={`relative w-full aspect-square p-2 md:p-6 rounded-xl border-2 transition-all font-black flex flex-col items-center justify-center text-center cursor-pointer shadow-2xl overflow-hidden ${getCellStyles()}`}
     >
-      {/* 질문 배경 이미지 추가 */}
-      <img 
-        src={question} 
-        alt="" 
-        className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none rounded-xl" 
-      />
 
       <AnimatePresence>
         {isPartOfBingo && bingoTeam && (
@@ -481,16 +473,16 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           <img
             src={cell.status === CellStatus.LOCKED_A ? cheer_lock_a : cheer_lock_b}
             alt="Locked"
-            className={`w-8 h-8 object-contain animate-pulse ${
+            className={`w-8 h-8 md:w-12 md:h-12 object-contain animate-pulse ${
               cell.status === CellStatus.LOCKED_A 
                 ? 'drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]' // A팀(하늘색) 자물쇠 광채
                 : 'drop-shadow-[0_0_15px_rgba(251,146,60,0.8)]' // B팀(주황색) 자물쇠 광채
             }`} 
           />
-          <span className="text-[10px] font-black uppercase tracking-widest opacity-90">Locked</span>
+          <span className="text-[10px] md:text-xs font-black uppercase tracking-widest opacity-90">Locked</span>
         </motion.div>
       ) : (
-        <span className="z-10 text-2xl md:text-3xl leading-tight uppercase italic break-keep">
+        <span className="z-10 text-sm md:text-2xl lg:text-3xl leading-tight uppercase italic break-keep drop-shadow-md">
           {cell.keyword}
         </span>
       )}
@@ -510,7 +502,7 @@ function StickButton({ label, color, icon, onClick, disabled = false }: {
       className={`relative flex items-center justify-center transition-opacity ${disabled ? 'opacity-20 cursor-not-allowed' : 'cursor-pointer'}`}
     >
       {typeof icon === 'string' ? (
-        <img src={icon} alt={label} className="w-32 h-32 md:w-48 md:h-48 object-contain drop-shadow-2xl" />
+        <img src={icon} alt={label} className="w-[250px] h-[250px] md:w-[400px] md:h-[400px] object-contain drop-shadow-2xl" />
       ) : (
         <div className="text-white drop-shadow-lg scale-150">
           {icon}
