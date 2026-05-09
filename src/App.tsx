@@ -291,11 +291,11 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
       initial={{ opacity: 0, scale: 0.8, y: "-40%", x: "-50%" }}
       animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
       exit={{ opacity: 0 }}
-      className="fixed z-50 top-1/2 left-1/2 w-full max-w-6xl overflow-hidden p-8 md:p-10 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl"
+      className="fixed z-50 top-1/2 left-1/2 w-[66vw] max-w-[1020px] aspect-[7/3] flex flex-col overflow-hidden p-6 md:p-9 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl"
       style={{ backgroundImage: `url(${question})` }}
     >
-        <div className="relative flex items-center justify-center mb-12 w-full">
-          <h2 className="text-6xl font-bold font-gulim uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full">
+        <div className="relative flex items-center justify-center mb-8 w-full">
+          <h2 className="text-[2.5rem] font-bold font-gulim uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full px-12">
             {cell.keyword}
           </h2>
           <button onClick={onClose} className="absolute right-0 p-3 hover:bg-white/10 rounded-2xl transition-all">
@@ -303,10 +303,10 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           </button>
         </div>
 
-        <div className="space-y-6 mb-10">
+        <div className="space-y-6 mb-6 flex-1 flex flex-col justify-center overflow-y-auto px-10">
           {/* 1. 비디오 영역 */}
           {cell.videoUrl && (
-            <div className="relative aspect-video rounded-[1.5rem] overflow-hidden border-2 border-white/10 bg-black">
+            <div className="relative aspect-video max-w-3xl mx-auto w-full rounded-[1.5rem] overflow-hidden border-2 border-white/10 bg-black">
               <video src={cell.videoUrl} className="w-full h-full object-cover" autoPlay loop muted controls />
               <div className="absolute top-4 left-4 px-3 py-1 bg-red-600 text-[10px] font-black rounded-md flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" /> LIVE VIDEO
@@ -330,7 +330,7 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
                 <motion.div 
                   key={idx}
                   whileHover={{ scale: 1.05 }}
-                  className="relative aspect-video md:aspect-square rounded-2xl overflow-hidden border-2 border-white/10 bg-black/20"
+                  className="relative aspect-video md:aspect-square max-w-[300px] mx-auto w-full rounded-2xl overflow-hidden border-2 border-white/10 bg-black/20"
                 >
                   <img src={imgUrl} alt={`Mission ref ${idx}`} className="w-full h-full object-cover" />
                 </motion.div>
@@ -339,13 +339,13 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           )}
 
           {/* 3. 미션 설명 영역 */}
-          <h1 className="text-4xl md:text-5xl font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)]">
+          <h1 className="text-xl md:text-[1.8rem] font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] max-w-4xl mx-auto">
             {cell.description}
           </h1>
         </div>
 
         {/* 하단 제어 버튼 */}
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-2 mx-auto max-w-5xl">
+        <div className="grid grid-cols-6 gap-4 mt-auto mx-auto w-full">
           <StickButton label="A WIN" color="skyblue" icon={cheerIcons.cheer_a} onClick={() => onResult('TEAM_A')} />
           <StickButton label="SHARED" color="purple" icon={cheerIcons.cheer_both} onClick={() => onResult('BOTH')} />
           <StickButton label="B WIN" color="orange" icon={cheerIcons.cheer_b} onClick={() => onResult('TEAM_B')} />
@@ -499,9 +499,9 @@ function StickButton({ label, color, icon, onClick, disabled = false }: {
       className={`relative flex items-center justify-center transition-opacity ${disabled ? 'opacity-20 cursor-not-allowed' : 'cursor-pointer'}`}
     >
       {typeof icon === 'string' ? (
-        <img src={icon} alt={label} className="w-[120px] h-[120px] md:w-[180px] md:h-[180px] object-contain drop-shadow-2xl" />
+        <img src={icon} alt={label} className="w-[100px] h-[100px] md:w-[145px] md:h-[145px] object-contain drop-shadow-2xl" />
       ) : (
-        <div className="text-white drop-shadow-lg scale-110">
+        <div className="text-white drop-shadow-lg scale-100">
           {icon}
         </div>
       )}
