@@ -5,11 +5,13 @@
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, Crown, X, Check, Trophy, Play, Pause, Volume2 } from 'lucide-react';
+import { X, Play, Pause, Volume2 } from 'lucide-react';
 import { CellStatus, CellData, Team, GameState } from './types';
 
 import background from './backgrounds/background.png';
 import question from './backgrounds/question_no_text.png';
+
+import chance_cell from './icons/chance.png';
 
 import cheer_a from './icons/cheer_icon1.png';
 import cheer_b from './icons/cheer_icon2.png';
@@ -27,31 +29,31 @@ import video1 from './videos/example.mp4';
 
 // 1. 문제 구조
 const INITIAL_KEYWORDS = [
-  { keyword: '주인공', description: '팬들이 가장 처음 입덕하게 된 데뷔곡의 초동 판매량을 맞혀보세요!', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '영단어', description: '최근 진행한 월드 투어의 도시 개수와 총 관객 수를 정확히 분석하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '사복', description: '해당 아티스트가 음악 방송에서 처음으로 1위를 한 날짜와 곡명을 맞혀주세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '시상식', description: '24시간 내에 달성한 뮤직비디오 조회수의 앞자리 숫자를 맞히는 미션입니다.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '이벤트', description: '가장 최근 타이틀곡의 킬링파트 응원법을 틀리지 않고 시연하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '낭독', description: '공식 팬클럽 기수별 상징 컬러와 혜택 한 가지를 설명하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '노래제목', description: '멤버 중 첫 솔로 데뷔 주자의 앨범명과 발매일을 정확히 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '해석', description: '최근 화제가 된 패션 잡지 화보의 컨셉명을 맞히는 미션입니다.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: 'SNS', description: '타 아티스트와 협업한 곡 중 가장 높은 차트 순위를 기록한 곡은?', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '교복', description: '안무 영상 조회수 1억 뷰를 가장 빠르게 달성한 곡을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '산수', description: '드라마 흥행과 함께 큰 사랑을 받은 OST의 드라마 제목을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '빈칸', description: '현재 브랜드 엠버서더로 활동 중인 럭셔리 브랜드의 이름을 맞히세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '?', description: '마지막 앵콜 콘서트에서 팬들이 준비했던 슬로건 문구를 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '소속사', description: '두 번째 미니 앨범에 수록된 숨은 명곡(수록곡) 한 줄 가창 미션!', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '유튜브', description: '최근 라이브 방송에서 언급한 가장 인상 깊은 팬의 댓글은?', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '실루엣', description: '작년 연말 시상식에서 수상한 상의 정확한 명칭을 맞혀주세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '한자', description: '틱톡/쇼츠에서 유행한 챌린지 안무의 핵심 동작을 시연하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '앵콜', description: '오프라인 팬미팅 당시 진행했던 특별 코너의 이름을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '노래방', description: '야구장 시구 당시 착용했던 유니폼의 등번호와 의미를 맞혀보세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '눈물', description: '가장 구하기 힘들다는 ‘레전드 포토카드’의 착장 정보를 설명하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '듣기', description: '최근 오픈한 팝업 스토어의 한정판 굿즈 품목 3가지를 말하세요.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '편지', description: '유튜브 공식 채널의 자체 예능 중 가장 조회수가 높은 에피소드는?', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '릴레이', description: '가장 최근에 출연한 라디오 프로그램명과 DJ의 이름을 맞혀보세요.', videoUrl: video1, audioUrl: '', images: [] },
-  { keyword: '투어', description: '최근 해외 출국길에 착용하여 완판된 아이템의 브랜드를 맞히세요.', videoUrl: '', audioUrl: audio1, images: [] },
-  { keyword: '1위', description: '올해 시즌 그리팅 패키지에 포함된 특별 구성품을 맞혀보세요.', videoUrl: '', audioUrl: '', images: [greenBg, orangeBg, skyblueBg] },
+  { keyword: '주인공', description: 'Q. 다음 사진 속 주인공을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '영단어', description: 'Q. 다음 영어 가사의 빈칸을 채우시오', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '사복', description: 'Q. 다음 사진을 보고, 곡 제목을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '시상식', description: 'Q. 다음 사진을 보고, 어떤 곡으로 수상했는지 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '이벤트', description: 'Q. 다음 콘서트의 슬로건 문구를 정확히 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '낭독', description: 'Q. AI가 읽어주는 가사를 듣고, 곡 제목과 해당 파트의 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '노래제목', description: 'Q. 다음 앨범의 트랙 리스트를 순서대로 맞히시오. (제한 시간 1분 30초)', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '해석', description: 'Q. 우리 팀의 그룹명과 팬덤명의 의미를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: 'SNS', description: 'Q. SNS에서 멤버가 직접 태그한 위치를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '교복', description: 'Q. 우리 팀 멤버 중 한 명을 선택하여, 졸업 중학교와 멤버 이름을 맞히시오. ', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '산수', description: 'Q. 멤버 2명의 생년월일 숫자를 모두 더하시오.\n  ex) 1993년 9월 18일, 1995년 10월 18일 \n = 1+9+9+3+0+9+1+8 + 1+9+9+5+1+0+1+8 = 74', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '빈칸', description: 'Q. 다음 기사 제목의 빈칸을 채우시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '?', description: 'Q. 다음 팬송에서 제시어가 총 몇 번 등장하는지 맞히시오. (제한 시간 2분)', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '소속사', description: 'Q. 다음 멤버의 소속사 입사 경로를 설명하시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '유튜브', description: 'Q. 우리 팀 뮤직비디오 중 조회수가 가장 높은 곡을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '실루엣', description: 'Q. 다음 사진을 보고, 빈칸에 맞는 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '한자', description: 'Q. 다음 멤버의 본명을 한자로 쓰시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '앵콜', description: 'Q. 다음 콘서트의 앵콜 곡을 <보기>에서 모두 고르시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '노래방', description: 'Q. 다음 영상 속 해당 파트를 부르시오. ', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '눈물', description: 'Q. 다음 시상식에서 눈물을 보인 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '듣기', description: 'Q. 다음 소리의 주인공을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '편지', description: 'Q. 다음 편지를 쓴 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '릴레이', description: 'Q. 우리 팀 노래 중, 제목이 N글자 이상인 곡을 각자 1개씩 말하시오.', videoUrl: video1, audioUrl: '', images: [] },
+  { keyword: '투어', description: 'Q. 다음 사진을 보고, 콘서트명과 개최 장소를 맞히시오.', videoUrl: '', audioUrl: audio1, images: [] },
+  { keyword: '1위', description: 'Q. 우리 팀의 음악방송 첫 1위 곡과 프로그램명을 맞히시오', videoUrl: '', audioUrl: '', images: [greenBg, orangeBg, skyblueBg] },
 ];
 interface BingoCellProps {
   cell: CellData;
@@ -196,12 +198,9 @@ export default function App() {
 
       {/* 메인 콘텐츠 컨테이너: 레이아웃 유지를 위한 기본 속성만 남김 */}
       <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-4 relative z-10 px-6 md:px-12">
-        {/* 제1팀 카드 */}
-        <TeamCard name="제1팀" bingo={gameState.teamABingoCount} chanceUsed={gameState.teamAChanceUsed} isActive={gameState.turn === 'A'} color="skyblue" />
-
         {/* 중앙 빙고 보드 영역 */}
         <main className="flex-1 relative flex items-center justify-center" data-id="root">
-          <div className="relative mx-auto w-full max-w-[88vh] aspect-square z-10 flex items-center justify-center p-4 bg-black shadow-[0_0_60px_-15px_rgba(0,0,0,1)] border border-white/5 animate-fade-up">
+          <div className="relative mx-auto w-full max-w-[min(100%,82vh)] aspect-square z-10 flex items-center justify-center p-4 md:p-6 bg-black shadow-[0_0_60px_-15px_rgba(0,0,0,1)] border border-white/5 animate-fade-up">
             
             {/* 적응형 빙고 그리드 */}
             <div className="grid grid-cols-5 gap-3 md:gap-5 w-full h-full relative z-20">
@@ -217,9 +216,6 @@ export default function App() {
             </div>
           </div>
         </main>
-
-        {/* 제2팀 카드 */}
-        <TeamCard name="제2팀" bingo={gameState.teamBBingoCount} chanceUsed={gameState.teamBChanceUsed} isActive={gameState.turn === 'B'} color="orange" />
       </div>
 
       <AnimatePresence>
@@ -359,33 +355,7 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
   );
 }
 
-// 나머지 컴포넌트 (TeamCard, BingoCell, StickButton, BingoOverlay 등은 이전과 동일)
-function TeamCard({ name, bingo, chanceUsed, isActive, color }: any) {
-  const accentColor = color === 'skyblue' ? 'border-sky-500 shadow-sky-500/20' : 'border-orange-500 shadow-orange-500/20';
-  return (
-    <motion.div layout className={`w-full lg:w-64 p-6 rounded-3xl flex flex-col gap-6 backdrop-blur-2xl transition-all duration-700 ${isActive ? `border-2 scale-105 ${accentColor} shadow-[0_0_40px_-10px_currentColor]` : 'border border-white/10 opacity-70'} bg-white/5 relative overflow-hidden`}>
-      <div className="flex items-center justify-between relative z-10">
-        <div className={`p-2.5 rounded-xl ${color === 'skyblue' ? 'bg-sky-500' : 'bg-orange-500'}`}>
-          <Trophy size={20} className="text-white" />
-        </div>
-        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase ${isActive ? (color === 'skyblue' ? 'bg-sky-500' : 'bg-orange-500') : 'bg-white/10'}`}>
-          {isActive ? '진행중' : '대기중'}
-        </div>
-      </div>
-      <div className="relative z-10">
-        <p className={`text-2xl font-bold font-gulim uppercase drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] ${color === 'skyblue' ? 'text-sky-400' : 'text-orange-400'}`}>{name}</p>
-      </div>
-      <div className="bg-black/40 p-6 rounded-2xl border border-white/10 flex flex-col items-center justify-center relative z-10">
-        <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">현재 빙고 개수</p>
-        <p className={`text-5xl font-black ${bingo > 0 ? (color === 'skyblue' ? 'text-sky-400' : 'text-orange-400') : 'text-white'}`}>{bingo}</p>
-      </div>
-      <div className={`flex items-center justify-between p-4 rounded-xl border relative z-10 ${chanceUsed ? 'bg-white/5 opacity-50' : 'bg-white/10'}`}>
-        <div className="flex items-center gap-2"><Lock size={14} /><span className="text-[10px] font-bold uppercase">자물쇠 찬스</span></div>
-        {chanceUsed ? <X size={14} /> : <Check size={14} />}
-      </div>
-    </motion.div>
-  );
-}
+// 나머지 컴포넌트 (BingoCell, StickButton, BingoOverlay 등은 이전과 동일)
 
 function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellProps) {
   const getCellStyles = () => {
@@ -467,18 +437,17 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
         <motion.div 
           initial={{ scale: 0.7, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="z-10 flex flex-col items-center gap-1"
+          className="absolute inset-0 z-10"
         >
           <img
-            src={cell.status === CellStatus.LOCKED_A ? cheer_lock_a : cheer_lock_b}
+            src={cell.status === CellStatus.LOCKED_A ? chance_cell : chance_cell}
             alt="Locked"
-            className={`w-8 h-8 md:w-12 md:h-12 object-contain animate-pulse ${
+            className={`w-full h-full object-cover animate-pulse ${
               cell.status === CellStatus.LOCKED_A 
                 ? 'drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]' // A팀(하늘색) 자물쇠 광채
                 : 'drop-shadow-[0_0_15px_rgba(251,146,60,0.8)]' // B팀(주황색) 자물쇠 광채
             }`} 
           />
-          <span className="text-[10px] md:text-xs font-black uppercase tracking-widest opacity-90">Locked</span>
         </motion.div>
       ) : (
         <span className="z-10 text-sm md:text-2xl lg:text-3xl leading-tight uppercase break-keep drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
