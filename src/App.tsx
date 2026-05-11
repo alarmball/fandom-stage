@@ -196,14 +196,18 @@ export default function App() {
       style={{ backgroundImage: `url(${background})` }}
     >
 
-      {/* 메인 콘텐츠 컨테이너: 레이아웃 유지를 위한 기본 속성만 남김 */}
-      <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-4 relative z-10 px-6 md:px-12">
-        {/* 중앙 빙고 보드 영역 */}
-        <main className="flex-1 relative flex items-center justify-center" data-id="root">
-          <div className="relative mx-auto w-full max-w-[min(100%,82vh)] aspect-square z-10 flex items-center justify-center p-4 md:p-6 bg-black shadow-[0_0_60px_-15px_rgba(0,0,0,1)] border border-white/5 animate-fade-up">
-            
-            {/* 적응형 빙고 그리드 */}
-            <div className="grid grid-cols-5 gap-3 md:gap-5 w-full h-full relative z-20">
+      {/* 빙고 보드 컨테이너: 1920x1080 배경 좌표에 맞춘 절대 위치 설정 */}
+      <div 
+        className="absolute z-10 animate-fade-up"
+        style={{
+          left: '27.708%',
+          top: '9.630%',
+          width: '44.531%',
+          height: '72.130%',
+        }}
+      >
+        {/* 적응형 빙고 그리드 */}
+        <div className="grid grid-cols-5 gap-x-1 gap-y-3 md:gap-x-3 md:gap-y-3 w-full h-full relative z-20">
                 {gameState.cells.map(cell => (
                   <BingoCell
                     key={cell.id}
@@ -213,9 +217,7 @@ export default function App() {
                     onClick={() => handleCellClick(cell.id)}
                   />
                 ))}
-            </div>
-          </div>
-        </main>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -287,7 +289,7 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
       initial={{ opacity: 0, scale: 0.8, y: "-40%", x: "-50%" }}
       animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
       exit={{ opacity: 0 }}
-      className="fixed z-50 top-1/2 left-1/2 w-[73vw] max-w-[1122px] aspect-[10/9] flex flex-col overflow-hidden p-8 md:p-11 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl max-h-[95vh]"
+      className="fixed z-50 top-1/2 left-1/2 w-[65.7vw] max-w-[1010px] aspect-[10/9] flex flex-col overflow-hidden p-8 md:p-11 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl max-h-[85.5vh]"
       style={{ backgroundImage: `url(${question})` }}
     >
         {/* 중앙 보라색 원형 그라데이션 효과 */}
@@ -304,12 +306,12 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           </button>
         </div>
 
-        {/* 1. 미션 설명 영역 */}
-        <h1 className="text-2xl md:text-[2rem] font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] max-w-4xl mx-auto">
-          {cell.description}
-        </h1>
+        <div className="space-y-10 mb-6 flex-1 flex flex-col justify-center overflow-y-auto px-10">
+          {/* 1. 미션 설명 영역 */}
+          <h1 className="text-3xl md:text-5xl font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] max-w-5xl mx-auto">
+            {cell.description}
+          </h1>
 
-        <div className="space-y-6 mb-6 flex-1 flex flex-col justify-center overflow-y-auto px-10">
           {/* 2. 비디오 영역 */}
           {cell.videoUrl && (
             <div className="relative aspect-video max-w-3xl mx-auto w-full rounded-[1.5rem] overflow-hidden border-2 border-white/10 bg-black">
@@ -406,12 +408,12 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
 
   return (
     <motion.button
-      initial={{ scale: 1.05, y: -2 }}
-      animate={{ scale: 1.05, y: -2 }}
-      whileHover={{ scale: 1.12, y: -8 }}
-      whileTap={{ scale: 0.98 }}
+      initial={{ scale: 0.85, y: 0 }}
+      animate={{ scale: 0.85, y: 0 }}
+      whileHover={{ scale: 0.952, y: -8 }} // 1.12 * 0.85
+      whileTap={{ scale: 0.833 }} // 0.98 * 0.85
       onClick={onClick}
-      className={`relative w-full aspect-square p-6 rounded-xl border-2 transition-all font-bold font-gulim flex flex-col items-center justify-center text-center cursor-pointer shadow-2xl overflow-hidden -top-4 ${getCellStyles()}`}
+      className={`relative w-full aspect-square p-4 rounded-xl border-2 transition-all font-bold font-gulim flex flex-col items-center justify-center text-center cursor-pointer shadow-2xl overflow-hidden ${getCellStyles()}`}
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.3)_0%,transparent_75%)] pointer-events-none z-0" />
 
@@ -450,7 +452,7 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           />
         </motion.div>
       ) : (
-        <span className="z-10 text-sm md:text-2xl lg:text-3xl leading-tight uppercase break-keep drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
+        <span className="z-10 text-base md:text-2xl lg:text-4xl leading-tight uppercase font-black break-keep drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
           {cell.keyword}
         </span>
       )}
