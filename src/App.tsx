@@ -89,7 +89,7 @@ const INITIAL_KEYWORDS = [
   { keyword: 'SNS', description: 'Q. SNS에서 멤버가 직접 태그한 위치를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_민호, 트와이스_사나] },
   { keyword: '교복', description: 'Q. 우리 팀 멤버 중 한 명을 선택하여,\n 졸업 중학교와 멤버 이름을 맞히시오. ', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '산수', description: 'Q. 멤버 2명의 생년월일 숫자를 모두 더하시오.\n  ex) 1993년 9월 18일, 1995년 10월 18일 \n = 1+9+9+3+0+9+1+8 + 1+9+9+5+1+0+1+8 = 74', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '빈칸', description: 'Q. 다음 기사 제목의 빈칸을 채우시오.', videoUrl: '', audioUrl: '', images: [샤이니_기사사진, 샤이니_미다시, 트와이스_기사사진, 트와이스_미다시] },
+  { keyword: '빈칸', description: 'Q. 다음 기사 제목의 빈칸을 채우시오.', videoUrl: '', audioUrl: '', images: [샤이니_미다시, 트와이스_미다시] },
   { keyword: '?', description: 'Q. 다음 팬송에서 제시어가 총 몇 번 등장하는지 맞히시오.\n (제한 시간 2분)', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '소속사', description: 'Q. 다음 멤버의 소속사 입사 경로를 설명하시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '유튜브', description: 'Q. 우리 팀 뮤직비디오 중\n 조회수가 가장 높은 곡을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
@@ -361,7 +361,7 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
         <div className="space-y-10 mb-6 flex-1 flex flex-col justify-center overflow-y-auto px-10">
           {/* 1. 미션 설명 영역 */}
           <h1 
-            className="text-3xl md:text-5xl font-bold text-white leading-tight break-keep whitespace-pre-wrap text-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] max-w-5xl mx-auto"
+            className="text-2xl md:text-4xl text-white leading-tight break-keep whitespace-pre-wrap text-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] max-w-5xl mx-auto"
             style={{ fontFamily: "'Sandoll GothicNeo1', sans-serif" }}
           >
             {cell.description}
