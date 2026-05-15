@@ -509,7 +509,7 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           className="absolute inset-0 z-10"
         >
           <img
-            src={cell.status === CellStatus.LOCKED_A ? chance_cell_2 : chance_cell_3}
+            src={cell.status === CellStatus.LOCKED_A ? chance_cell : chance_cell_3}
             alt="Locked"
             className={`w-full h-full object-contain p-2 animate-pulse ${
               cell.status === CellStatus.LOCKED_A 
@@ -519,7 +519,7 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           />
         </motion.div>
       ) : (
-        cell.status === CellStatus.EMPTY && (
+        (cell.status === CellStatus.EMPTY || cell.status === CellStatus.FAIL) && (
           <span 
             className="z-10 text-base md:text-2xl lg:text-3xl text-white font-bold pointer-events-none drop-shadow-[0_2px_10px_rgba(0,0,0,1)]"
             style={{ fontFamily: "'Apple SD Gothic Neo', 'Sandoll GothicNeo1', sans-serif" }}
