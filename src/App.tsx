@@ -30,9 +30,13 @@ import cheer_fail from './icons/cheer_icon4.png';
 import cheer_lock_a from './icons/cheer_icon5.png';
 import cheer_lock_b from './icons/cheer_icon6.png';
 
-import greenBg from './images/green_bg.jpg';
-import orangeBg from './images/orange_bg.jpg';
-import skyblueBg from './images/skyblue_bg.jpg';
+import 라이즈 from './images/라이즈.jpg';
+import 샤이니_민호 from './images/샤이니_민호.jpg';
+import 트와이스_사나 from './images/트와이스_사나.jpg';
+
+import 라이즈_눈물 from './images/라이즈_눈물.png';
+import 샤이니_눈물 from './images/샤이니_눈물.png';
+import 트와이스_눈물 from './images/트와이스_눈물.png';
 
 import audio1 from './audios/1-108.mp3';
 import video1 from './videos/example.mp4';
@@ -47,7 +51,7 @@ const INITIAL_KEYWORDS = [
   { keyword: '낭독', description: 'Q. AI가 읽어주는 가사를 듣고, 곡 제목과 해당 파트의 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '노래제목', description: 'Q. 다음 앨범의 트랙 리스트를 순서대로 맞히시오. (제한 시간 1분 30초)', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '해석', description: 'Q. 우리 팀의 그룹명과 팬덤명의 의미를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: 'SNS', description: 'Q. SNS에서 멤버가 직접 태그한 위치를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: 'SNS', description: 'Q. SNS에서 멤버가 직접 태그한 위치를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_민호, 트와이스_사나] },
   { keyword: '교복', description: 'Q. 우리 팀 멤버 중 한 명을 선택하여, 졸업 중학교와 멤버 이름을 맞히시오. ', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '산수', description: 'Q. 멤버 2명의 생년월일 숫자를 모두 더하시오.\n  ex) 1993년 9월 18일, 1995년 10월 18일 \n = 1+9+9+3+0+9+1+8 + 1+9+9+5+1+0+1+8 = 74', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '빈칸', description: 'Q. 다음 기사 제목의 빈칸을 채우시오.', videoUrl: '', audioUrl: '', images: [] },
@@ -55,15 +59,15 @@ const INITIAL_KEYWORDS = [
   { keyword: '소속사', description: 'Q. 다음 멤버의 소속사 입사 경로를 설명하시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '유튜브', description: 'Q. 우리 팀 뮤직비디오 중 조회수가 가장 높은 곡을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '실루엣', description: 'Q. 다음 사진을 보고, 빈칸에 맞는 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '한자', description: 'Q. 다음 멤버의 본명을 한자로 쓰시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '한자', description: 'Q.  다음 멤버 이름에 쓰인 한자 뜻을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '앵콜', description: 'Q. 다음 콘서트의 앵콜 곡을 <보기>에서 모두 고르시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '노래방', description: 'Q. 다음 영상 속 해당 파트를 부르시오. ', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '눈물', description: 'Q. 다음 시상식에서 눈물을 보인 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '눈물', description: 'Q. 다음 시상식에서 눈물을 보인 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_눈물, 트와이스_눈물] },
   { keyword: '듣기', description: 'Q. 다음 소리의 주인공을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '편지', description: 'Q. 다음 편지를 쓴 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '릴레이', description: 'Q. 우리 팀 노래 중, 제목이 N글자 이상인 곡을 각자 1개씩 말하시오.', videoUrl: video1, audioUrl: '', images: [] },
-  { keyword: '투어', description: 'Q. 다음 사진을 보고, 콘서트명과 개최 장소를 맞히시오.', videoUrl: '', audioUrl: audio1, images: [] },
-  { keyword: '1위', description: 'Q. 우리 팀의 음악방송 첫 1위 곡과 프로그램명을 맞히시오', videoUrl: '', audioUrl: '', images: [greenBg, orangeBg, skyblueBg] },
+  { keyword: '릴레이', description: 'Q. 우리 팀 노래 중, 제목이 2음절 이하인 곡을 각자 1개씩 말하시오.', videoUrl: video1, audioUrl: '', images: [] },
+  { keyword: '투어', description: 'Q. 다음 사진을 보고, 콘서트 장소를 맞히시오.', videoUrl: '', audioUrl: audio1, images: [] },
+  { keyword: '1위', description: 'Q. 우리 팀의 음악방송 첫 1위 곡과 프로그램명을 맞히시오', videoUrl: '', audioUrl: '', images: [] },
 ];
 interface BingoCellProps {
   cell: CellData;
@@ -203,7 +207,7 @@ export default function App() {
   return (
     <div 
       className="min-h-screen text-white p-4 flex flex-col items-center justify-center overflow-hidden relative bg-[length:100%_100%] bg-no-repeat"
-      style={{ backgroundImage: `url(${background})`, fontFamily: "'Sandoll GothicNeo1', 'Apple SD Gothic Neo', sans-serif" }}
+      style={{ backgroundImage: `url(${background})`, fontFamily: "'Bitro Inspire', sans-serif" }}
     >
 
       {/* 빙고 보드 컨테이너: 1920x1080 배경 좌표에 맞춘 절대 위치 설정 */}
@@ -305,7 +309,7 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
         <div className="relative flex items-center justify-center mb-8 w-full">
           <h2 
             className="text-[3.5rem] font-bold uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full px-12"
-            style={{ fontFamily: "'Apple SD Gothic Neo', 'Sandoll GothicNeo1', sans-serif" }}
+            style={{ fontFamily: "'Bitro Inspire', sans-serif" }}
           >
             {cell.keyword}
           </h2>
@@ -318,7 +322,7 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           {/* 1. 미션 설명 영역 */}
           <h1 
             className="text-3xl md:text-5xl font-bold text-white leading-tight break-keep text-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] max-w-5xl mx-auto"
-            style={{ fontFamily: "'Sandoll GothicNeo1', 'Apple SD Gothic Neo', sans-serif" }}
+            style={{ fontFamily: "'Sandoll Godic Neo1', sans-serif" }}
           >
             {cell.description}
           </h1>
@@ -478,7 +482,7 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
         cell.status === CellStatus.EMPTY && (
           <span 
             className="z-10 text-base md:text-2xl lg:text-3xl text-white font-bold pointer-events-none drop-shadow-[0_2px_10px_rgba(0,0,0,1)]"
-            style={{ fontFamily: "'Apple SD Gothic Neo', 'Sandoll GothicNeo1', sans-serif" }}
+            style={{ fontFamily: "'Bitro Inspire', sans-serif" }}
           >
             {cell.keyword}
           </span>

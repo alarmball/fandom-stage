@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'Bitro Inspire';
+  src: url('./fonts/Bitro-Inspire.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
