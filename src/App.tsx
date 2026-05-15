@@ -69,10 +69,6 @@ import 라이즈_쇼타로 from './images/라이즈_쇼타로.jpg';
 import 샤이니_키 from './images/샤이니_키.jpg';
 import 트와이스_나연 from './images/트와이스_나연.jpg';
 
-import 한자_라이즈_소희 from './images/한자_라이즈_소희.jpg';
-import 한자_샤이니_민호 from './images/한자_샤이니_민호.jpg';
-import 한자_트와이스_지효 from './images/한자_트와이스_지효.jpg';
-
 import audio1 from './audios/1-108.mp3';
 import video1 from './videos/example.mp4';
 
@@ -83,18 +79,18 @@ const INITIAL_KEYWORDS = [
   { keyword: '사복', description: 'Q. 다음 사진을 보고, 곡 제목을 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_사복, 트와이스_사복] },
   { keyword: '시상식', description: 'Q. 다음 사진을 보고, 어떤 곡으로 수상했는지 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_시상식, 트와이스_시상식] },
   { keyword: '이벤트', description: 'Q. 다음 콘서트의 슬로건 문구를 정확히 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '낭독', description: 'Q. AI가 읽어주는 가사를 듣고,\n 곡 제목과 해당 파트의 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '낭독', description: 'Q. AI가 읽어주는 가사를 듣고, 곡 제목을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '노래제목', description: 'Q. 다음 앨범의 트랙 리스트를 순서대로 맞히시오.\n (제한 시간 1분 30초)', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '해석', description: 'Q. 우리 팀의 그룹명과 팬덤명의 의미를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: 'SNS', description: 'Q. SNS에서 멤버가 직접 태그한 위치를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_민호, 트와이스_사나] },
   { keyword: '교복', description: 'Q. 우리 팀 멤버 중 한 명을 선택하여,\n 졸업 중학교와 멤버 이름을 맞히시오. ', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '산수', description: 'Q. 멤버 2명의 생년월일 숫자를 모두 더하시오.\n  ex) 1993년 9월 18일, 1995년 10월 18일 \n = 1+9+9+3+0+9+1+8 + 1+9+9+5+1+0+1+8 = 74', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '빈칸', description: 'Q. 다음 기사 제목의 빈칸을 채우시오.', videoUrl: '', audioUrl: '', images: [샤이니_미다시, 트와이스_미다시] },
+  { keyword: '빈칸', description: 'Q. 다음 기사 제목의 빈칸을 채우시오.', videoUrl: '', audioUrl: '', images: [트와이스_미다시, 샤이니_미다시, 트와이스_기사사진, 샤이니_기사사진] },
   { keyword: '?', description: 'Q. 다음 팬송에서 제시어가 총 몇 번 등장하는지 맞히시오.\n (제한 시간 2분)', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '소속사', description: 'Q. 다음 멤버의 소속사 입사 경로를 설명하시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '유튜브', description: 'Q. 우리 팀 뮤직비디오 중\n 조회수가 가장 높은 곡을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '실루엣', description: 'Q. 다음 사진을 보고, 빈칸에 맞는 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_실루엣, 트와이스_실루엣] },
-  { keyword: '한자', description: 'Q.  다음 멤버 이름에 쓰인 한자 뜻을 맞히시오.', videoUrl: '', audioUrl: '', images: [한자_샤이니_민호, 한자_트와이스_지효] },
+  { keyword: '한자', description: 'Q.  다음 멤버 이름에 쓰인 한자 뜻을 맞히시오.\n\n\n\n\n\n\n\n\n\n\n\n 崔珉豪 (최민호) | 朴志效 (박지효)\n OO최 OO민 OO호 | OO박 OO지 OO효', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '앵콜', description: 'Q. 다음 콘서트의 앵콜 곡을 <보기>에서 모두 고르시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '노래방', description: 'Q. 다음 영상 속 해당 파트를 부르시오. ', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '눈물', description: 'Q. 다음 시상식에서 눈물을 보인 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_눈물, 트와이스_눈물] },
@@ -360,12 +356,45 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
 
         <div className="space-y-10 mb-6 flex-1 flex flex-col justify-center overflow-y-auto px-10">
           {/* 1. 미션 설명 영역 */}
-          <h1 
-            className="text-2xl md:text-4xl text-white leading-tight break-keep whitespace-pre-wrap text-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] max-w-5xl mx-auto"
-            style={{ fontFamily: "'Sandoll GothicNeo1', sans-serif" }}
+          <div 
+            className="text-3xl md:text-5xl text-white leading-tight break-keep max-w-5xl mx-auto w-full"
+            style={{ 
+              fontFamily: "'Sandoll GothicNeo1', sans-serif",
+              textShadow: `
+                4px 4px 10px rgba(0, 0, 0, 0.9), 
+                0 0 20px rgba(0, 0, 0, 0.7),
+                -1px -1px 0px rgba(0, 0, 0, 0.5),
+                1px -1px 0px rgba(0, 0, 0, 0.5),
+                -1px 1px 0px rgba(0, 0, 0, 0.5),
+                1px 1px 0px rgba(0, 0, 0, 0.5)
+              `
+            }}
           >
-            {cell.description}
-          </h1>
+            {cell.keyword === '한자' ? (
+              <div className="flex flex-col space-y-2">
+                {cell.description.split('\n').map((line: string, idx: number) => {
+                  if (line.includes('|')) {
+                    const [leftText, rightText] = line.split('|');
+                    return (
+                      <div key={idx} className="flex justify-between w-full">
+                        <span className="text-left">{leftText.trim()}</span>
+                        <span className="text-right">{rightText.trim()}</span>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={idx} className="text-center w-full whitespace-pre-wrap">
+                      {line}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <h1 className="text-center whitespace-pre-wrap">
+                {cell.description}
+              </h1>
+            )}
+          </div>
 
           {/* 2. 비디오 영역 */}
           {cell.videoUrl && (
@@ -379,20 +408,27 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
             <AudioPlayer src={cell.audioUrl} />
           )}
 
-          {/* 4. 이미지 갤러리 영역 (1~3장) */}
+          {/* 4. 이미지 갤러리 영역 (1~4장) */}
           {cell.images && cell.images.length > 0 && (
-            <div className={`grid gap-4 ${
-              cell.images.length === 1 ? 'grid-cols-1' : 
-              cell.images.length === 2 ? 'grid-cols-2' : 
-              'grid-cols-3'
+            <div className={`grid gap-4 mx-auto w-full items-center ${
+              cell.images.length === 1 ? 'grid-cols-1 max-w-[500px]' : 
+              cell.images.length === 2 || cell.images.length === 4 ? 'grid-cols-2 max-w-4xl' : 
+              'grid-cols-3 max-w-5xl'
             }`}>
               {cell.images.map((imgUrl: string, idx: number) => (
                 <motion.div 
                   key={idx}
                   whileHover={{ scale: 1.05 }}
-                  className="relative aspect-video md:aspect-square max-w-[300px] mx-auto w-full rounded-2xl overflow-hidden border-2 border-white/10 bg-black/20"
+                  // max-h-[400px]를 추가하여 전체 컨테이너의 최대 높이를 제한합니다.
+                  className="relative w-full max-h-[380px] rounded-2xl overflow-hidden border-2 border-white/10 bg-black/20 flex items-center justify-center"
                 >
-                  <img src={imgUrl} alt={`Mission ref ${idx}`} className="w-full h-full object-cover" />
+                  <img 
+                    src={imgUrl} 
+                    alt={`Mission ref ${idx}`} 
+                    // w-full과 h-auto로 비율을 유지하되, max-h를 주어 이미지가 400px을 넘지 않게 합니다.
+                    // object-contain은 이미지가 400px에 걸릴 경우 짤리지 않고 영역 안에 다 들어오게 합니다.
+                    className="w-full h-auto max-h-[400px] object-contain block"
+                  />
                 </motion.div>
               ))}
             </div>
