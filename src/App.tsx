@@ -11,7 +11,17 @@ import { CellStatus, CellData, Team, GameState } from './types';
 import background from './backgrounds/background.png';
 import question from './backgrounds/question_no_text.png';
 
-import chance_cell from './icons/chance.png';
+import briize from './cells/briize.png';
+import once from './cells/once.png';
+import shinee from './cells/shinee world.png';
+
+import both_1 from './cells/both_1.png';
+import both_2 from './cells/both_2.png';
+import both_3 from './cells/both_3.png';
+
+import chance_cell from './cells/chance.png';
+import chance_cell_2 from './cells/chance_2.png';
+import chance_cell_3 from './cells/chance_3.png';
 
 import cheer_a from './icons/cheer_icon1.png';
 import cheer_b from './icons/cheer_icon2.png';
@@ -193,21 +203,21 @@ export default function App() {
   return (
     <div 
       className="min-h-screen text-white p-4 flex flex-col items-center justify-center overflow-hidden relative bg-[length:100%_100%] bg-no-repeat"
-      style={{ backgroundImage: `url(${background})` }}
+      style={{ backgroundImage: `url(${background})`, fontFamily: "'Sandoll GothicNeo1', 'Apple SD Gothic Neo', sans-serif" }}
     >
 
       {/* 빙고 보드 컨테이너: 1920x1080 배경 좌표에 맞춘 절대 위치 설정 */}
       <div 
         className="absolute z-10 animate-fade-up"
         style={{
-          left: '27.708%',
-          top: '9.630%',
-          width: '44.531%',
-          height: '72.130%',
+          left: '30.95%',
+          top: '13.15%',
+          width: '38.1%',
+          height: '61.2%',
         }}
       >
         {/* 적응형 빙고 그리드 */}
-        <div className="grid grid-cols-5 gap-x-1 gap-y-3 md:gap-x-3 md:gap-y-3 w-full h-full relative z-20">
+        <div className="grid grid-cols-5 gap-x-2 gap-y-35 w-full h-full relative z-20">
                 {gameState.cells.map(cell => (
                   <BingoCell
                     key={cell.id}
@@ -292,13 +302,11 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
       className="fixed z-50 top-1/2 left-1/2 w-[65.7vw] max-w-[1010px] aspect-[10/9] flex flex-col overflow-hidden p-8 md:p-11 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl max-h-[85.5vh]"
       style={{ backgroundImage: `url(${question})` }}
     >
-        {/* 중앙 보라색 원형 그라데이션 효과 */}
-        <div 
-          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.3)_0%,transparent_75%)] pointer-events-none z-0" 
-        />
-
         <div className="relative flex items-center justify-center mb-8 w-full">
-          <h2 className="text-[2.75rem] font-bold font-gulim uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full px-12">
+          <h2 
+            className="text-[3.5rem] font-bold uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full px-12"
+            style={{ fontFamily: "'Apple SD Gothic Neo', 'Sandoll GothicNeo1', sans-serif" }}
+          >
             {cell.keyword}
           </h2>
           <button onClick={onClose} className="absolute right-0 p-3 hover:bg-white/10 rounded-2xl transition-all">
@@ -308,7 +316,10 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
 
         <div className="space-y-10 mb-6 flex-1 flex flex-col justify-center overflow-y-auto px-10">
           {/* 1. 미션 설명 영역 */}
-          <h1 className="text-3xl md:text-5xl font-bold font-gulim text-white leading-tight break-keep text-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] max-w-5xl mx-auto">
+          <h1 
+            className="text-3xl md:text-5xl font-bold text-white leading-tight break-keep text-center drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] max-w-5xl mx-auto"
+            style={{ fontFamily: "'Sandoll GothicNeo1', 'Apple SD Gothic Neo', sans-serif" }}
+          >
             {cell.description}
           </h1>
 
@@ -362,13 +373,13 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
 function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellProps) {
   const getCellStyles = () => {
     switch (cell.status) {
-      case CellStatus.TEAM_A: return 'bg-sky-500/20 border-sky-400/50 text-sky-100 backdrop-blur-md shadow-[0_0_15px_rgba(56,189,248,0.2)]';
-      case CellStatus.TEAM_B: return 'bg-orange-500/20 border-orange-400/50 text-orange-100 backdrop-blur-md shadow-[0_0_15px_rgba(251,146,60,0.2)]';
-      case CellStatus.BOTH: return 'relative overflow-hidden border-white/60 text-white backdrop-blur-md';
-      case CellStatus.FAIL: return 'bg-black/60 opacity-40 grayscale';
-      case CellStatus.LOCKED_A: return 'bg-sky-600/30 border-sky-400/40 text-sky-100 backdrop-blur-md';
-      case CellStatus.LOCKED_B: return 'bg-orange-600/30 border-orange-400/40 text-orange-100 backdrop-blur-md';
-      default: return 'bg-white/[0.03] border-white/40 text-white/60 hover:bg-white/[0.08] hover:border-white/80 backdrop-blur-sm';
+      case CellStatus.TEAM_A: return 'border-white';
+      case CellStatus.TEAM_B: return 'border-white';
+      case CellStatus.BOTH: return 'border-white';
+      case CellStatus.FAIL: return 'bg-black/80 opacity-60 grayscale border-white/20';
+      case CellStatus.LOCKED_A: return 'border-white';
+      case CellStatus.LOCKED_B: return 'border-white';
+      default: return 'bg-white/5 border-white/40 hover:bg-white/10 hover:border-white';
     }
   };
 
@@ -408,14 +419,17 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
 
   return (
     <motion.button
-      initial={{ scale: 0.85, y: 0 }}
-      animate={{ scale: 0.85, y: 0 }}
-      whileHover={{ scale: 0.952, y: -8 }} // 1.12 * 0.85
-      whileTap={{ scale: 0.833 }} // 0.98 * 0.85
+      initial={{ scale: 1, y: 0 }}
+      animate={{ scale: 1, y: 0 }}
+      whileHover={{ scale: 1.05, y: -5, zIndex: 30 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className={`relative w-full aspect-square p-4 rounded-xl border-2 transition-all font-bold font-gulim flex flex-col items-center justify-center text-center cursor-pointer shadow-2xl overflow-hidden ${getCellStyles()}`}
+      className={`relative w-full aspect-square transition-all cursor-pointer overflow-hidden border-4 rounded-xl flex items-center justify-center ${getCellStyles()}`}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.3)_0%,transparent_75%)] pointer-events-none z-0" />
+      {/* 문제 그리드와 동일한 중앙 보라색 원형 그라데이션 효과 추가 */}
+      <div 
+        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.3)_0%,transparent_75%)] pointer-events-none z-0" 
+      />
 
       <AnimatePresence>
         {isPartOfBingo && bingoTeam && (
@@ -429,10 +443,19 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           />
         )}
       </AnimatePresence>
+      {cell.status === CellStatus.TEAM_A && (
+        <div className="absolute inset-0 z-0">
+          <img src={shinee} alt="" className="w-full h-full object-cover opacity-90" />
+        </div>
+      )}
+      {cell.status === CellStatus.TEAM_B && (
+        <div className="absolute inset-0 z-0">
+          <img src={once} alt="" className="w-full h-full object-cover opacity-90" />
+        </div>
+      )}
       {cell.status === CellStatus.BOTH && (
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-sky-500/40" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
-          <div className="absolute inset-0 bg-orange-500/40" style={{ clipPath: 'polygon(100% 100%, 100% 0, 0 100%)' }} />
+          <img src={both_2} alt="" className="w-full h-full object-cover opacity-90" />
         </div>
       )}
       {cell.status === CellStatus.LOCKED_A || cell.status === CellStatus.LOCKED_B ? (
@@ -442,9 +465,9 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           className="absolute inset-0 z-10"
         >
           <img
-            src={cell.status === CellStatus.LOCKED_A ? chance_cell : chance_cell}
+            src={cell.status === CellStatus.LOCKED_A ? chance_cell_2 : chance_cell_3}
             alt="Locked"
-            className={`w-full h-full object-cover animate-pulse ${
+            className={`w-full h-full object-contain p-2 animate-pulse ${
               cell.status === CellStatus.LOCKED_A 
                 ? 'drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]' // A팀(하늘색) 자물쇠 광채
                 : 'drop-shadow-[0_0_15px_rgba(251,146,60,0.8)]' // B팀(주황색) 자물쇠 광채
@@ -452,9 +475,14 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
           />
         </motion.div>
       ) : (
-        <span className="z-10 text-base md:text-2xl lg:text-4xl leading-tight uppercase font-black break-keep drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
-          {cell.keyword}
-        </span>
+        cell.status === CellStatus.EMPTY && (
+          <span 
+            className="z-10 text-base md:text-2xl lg:text-3xl text-white font-bold pointer-events-none drop-shadow-[0_2px_10px_rgba(0,0,0,1)]"
+            style={{ fontFamily: "'Apple SD Gothic Neo', 'Sandoll GothicNeo1', sans-serif" }}
+          >
+            {cell.keyword}
+          </span>
+        )
       )}
     </motion.button>
   );
@@ -489,7 +517,7 @@ function BingoOverlay({ team }: { team: Team }) {
         initial={{ scale: 0.3, opacity: 0, y: 50 }} 
         animate={{ scale: 1, opacity: 1, y: 0 }} 
         transition={{ delay: 0.3, type: 'spring', bounce: 0.6 }}
-        className={`relative z-10 text-6xl md:text-8xl font-bold font-gulim uppercase px-16 py-8 border-4 rounded-[3rem] backdrop-blur-md ${team === 'A' ? 'text-white bg-sky-900/40 border-sky-400 shadow-[0_0_80px_rgba(14,165,233,0.6)]' : 'text-white bg-orange-900/40 border-orange-400 shadow-[0_0_80px_rgba(249,115,22,0.6)]'}`}
+        className={`relative z-10 text-6xl md:text-8xl font-bold uppercase px-16 py-8 border-4 rounded-[3rem] backdrop-blur-md ${team === 'A' ? 'text-white bg-sky-900/40 border-sky-400 shadow-[0_0_80px_rgba(14,165,233,0.6)]' : 'text-white bg-orange-900/40 border-orange-400 shadow-[0_0_80px_rgba(249,115,22,0.6)]'}`}
       >
         <div className="flex flex-col items-center gap-2">
           <span className={`text-2xl tracking-[0.3em] ${team === 'A' ? 'text-sky-300' : 'text-orange-300'}`}>{team === 'A' ? 'STARLIGHT' : 'AURORA'}</span>
