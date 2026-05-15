@@ -100,8 +100,8 @@ const INITIAL_KEYWORDS = [
   { keyword: '눈물', description: 'Q. 다음 시상식에서 눈물을 보인 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_눈물, 트와이스_눈물] },
   { keyword: '듣기', description: 'Q. 다음 소리의 주인공을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '편지', description: 'Q. 다음 편지를 쓴 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_키, 트와이스_나연] },
-  { keyword: '릴레이', description: 'Q. 우리 팀 노래 중,\n 제목이 2음절 이하인 곡을 각자 1개씩 말하시오.', videoUrl: video1, audioUrl: '', images: [] },
-  { keyword: '투어', description: 'Q. 다음 사진을 보고, 콘서트 장소를 맞히시오.', videoUrl: '', audioUrl: audio1, images: [샤이니_투어, 트와이스_투어] },
+  { keyword: '릴레이', description: 'Q. 우리 팀 노래 중,\n 제목이 2음절 이하인 곡을 각자 1개씩 말하시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '투어', description: 'Q. 다음 사진을 보고, 콘서트 장소를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_투어, 트와이스_투어] },
   { keyword: '1위', description: 'Q. 우리 팀의 음악방송 첫 1위 곡과 프로그램명을 맞히시오', videoUrl: '', audioUrl: '', images: [] },
 ];
 interface BingoCellProps {
