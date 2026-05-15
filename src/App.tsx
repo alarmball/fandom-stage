@@ -83,9 +83,9 @@ const INITIAL_KEYWORDS = [
   { keyword: '노래제목', description: 'Q. 다음 앨범의 트랙 리스트를 순서대로 맞히시오.\n (제한 시간 1분 30초)', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '해석', description: 'Q. 우리 팀의 그룹명과 팬덤명의 의미를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: 'SNS', description: 'Q. SNS에서 멤버가 직접 태그한 위치를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_민호, 트와이스_사나] },
-  { keyword: '교복', description: 'Q. 우리 팀 멤버 중 한 명을 선택하여,\n 졸업 중학교와 멤버 이름을 맞히시오. ', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '교복', description: 'Q. 다음 멤버가 졸업한 중학교 이름을 맞히시오. ', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '산수', description: 'Q. 멤버 2명의 생년월일 숫자를 모두 더하시오.\n  ex) 1993년 9월 18일, 1995년 10월 18일 \n = 1+9+9+3+0+9+1+8 + 1+9+9+5+1+0+1+8 = 74', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '빈칸', description: 'Q. 다음 기사 제목의 빈칸을 채우시오.', videoUrl: '', audioUrl: '', images: [트와이스_미다시, 샤이니_미다시, 트와이스_기사사진, 샤이니_기사사진] },
+  { keyword: '빈칸', description: 'Q. 다음 기사 제목의 빈칸을 채우시오.', videoUrl: '', audioUrl: '', images: [샤이니_미다시, 트와이스_미다시, 샤이니_기사사진, 트와이스_기사사진] },
   { keyword: '?', description: 'Q. 다음 팬송에서 제시어가 총 몇 번 등장하는지 맞히시오.\n (제한 시간 2분)', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '소속사', description: 'Q. 다음 멤버의 소속사 입사 경로를 설명하시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '유튜브', description: 'Q. 우리 팀 뮤직비디오 중\n 조회수가 가장 높은 곡을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
@@ -343,11 +343,16 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
         />
         <div className="relative flex items-center justify-center mb-8 w-full">
           <h2 
-            className="relative text-[3.5rem] font-bold uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full px-12 glitch-effect"
+            className="relative text-[3.5rem] font-bold uppercase text-white tracking-tight text-center w-full px-12 glitch-effect"
             style={{ 
               fontFamily: "'Bitro Inspire', sans-serif", 
               transform: 'scaleY(1.3)',
-              textShadow: '4px 4px 0px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5)'
+              color: '#ffffff',
+              WebkitTextStroke: '4px #000000',
+              paintOrder: 'stroke fill',
+              filter: 'drop-shadow(0px 1px 1px #000000) drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.5)) drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.6))',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.05em'
             }}
             data-text={cell.keyword}
           >
@@ -363,14 +368,14 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           <div 
             className="text-3xl md:text-5xl text-white leading-tight break-keep max-w-5xl mx-auto w-full"
             style={{ 
-              fontFamily: "'Sandoll GothicNeo1', sans-serif", 
-              textShadow: ` 
-                6px 6px 15px rgba(0, 0, 0, 1), /* Increased offset, blur, and full opacity */ 
-                0 0 30px rgba(0, 0, 0, 0.9),  /* Increased blur and opacity */ 
-                -1px -1px 0px rgba(0, 0, 0, 0.6), /* Slightly increased opacity for outline */ 
-                1px -1px 0px rgba(0, 0, 0, 0.6), 
-                -1px 1px 0px rgba(0, 0, 0, 0.6), 
-                1px 1px 0px rgba(0, 0, 0, 0.6) 
+              fontFamily: "'sandoll Gothic Neo', sans-serif", 
+              textShadow: `
+                1px 1px 0px #000,
+                2px 2px 0px #000,
+                3px 3px 0px #000,
+                4px 4px 0px #000,
+                5px 5px 0px #000,
+                6px 6px 18px rgba(0,0,0,0.10)
               `
             }}
           >
