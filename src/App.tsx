@@ -67,7 +67,7 @@ import 트와이스_투어 from './images/트와이스_투어.png';
 
 import 라이즈_쇼타로 from './images/라이즈_쇼타로.jpg';
 import 샤이니_키 from './images/샤이니_키.jpg';
-import 트와이스_나연 from './images/트와이스_나연.jpg';
+import 트와이스_나연 from './images/트와이스_나연.png';
 
 import audio1 from './audios/1-108.mp3';
 import video1 from './videos/example.mp4';
@@ -337,6 +337,10 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
       className="fixed z-50 top-1/2 left-1/2 w-[65.7vw] max-w-[1010px] aspect-[10/9] flex flex-col overflow-hidden p-8 md:p-11 bg-[length:100%_100%] bg-no-repeat shadow-2xl backdrop-blur-2xl max-h-[85.5vh]"
       style={{ backgroundImage: `url(${question})` }}
     >
+        {/* 문제 모달 중앙 보라색 원형 그라데이션 효과 추가 */}
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.3)_0%,transparent_75%)] pointer-events-none z-0"
+        />
         <div className="relative flex items-center justify-center mb-8 w-full">
           <h2 
             className="relative text-[3.5rem] font-bold uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] tracking-tight text-center w-full px-12 glitch-effect"
@@ -359,14 +363,14 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           <div 
             className="text-3xl md:text-5xl text-white leading-tight break-keep max-w-5xl mx-auto w-full"
             style={{ 
-              fontFamily: "'Sandoll GothicNeo1', sans-serif",
-              textShadow: `
-                4px 4px 10px rgba(0, 0, 0, 0.9), 
-                0 0 20px rgba(0, 0, 0, 0.7),
-                -1px -1px 0px rgba(0, 0, 0, 0.5),
-                1px -1px 0px rgba(0, 0, 0, 0.5),
-                -1px 1px 0px rgba(0, 0, 0, 0.5),
-                1px 1px 0px rgba(0, 0, 0, 0.5)
+              fontFamily: "'Sandoll GothicNeo1', sans-serif", 
+              textShadow: ` 
+                6px 6px 15px rgba(0, 0, 0, 1), /* Increased offset, blur, and full opacity */ 
+                0 0 30px rgba(0, 0, 0, 0.9),  /* Increased blur and opacity */ 
+                -1px -1px 0px rgba(0, 0, 0, 0.6), /* Slightly increased opacity for outline */ 
+                1px -1px 0px rgba(0, 0, 0, 0.6), 
+                -1px 1px 0px rgba(0, 0, 0, 0.6), 
+                1px 1px 0px rgba(0, 0, 0, 0.6) 
               `
             }}
           >
