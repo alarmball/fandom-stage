@@ -57,15 +57,31 @@ import 라이즈_실루엣 from './images/라이즈_실루엣.png';
 import 샤이니_실루엣 from './images/샤이니_실루엣.png';
 import 트와이스_실루엣 from './images/트와이스_실루엣.png';
 
+import 주인공_라이즈_은석 from './images/주인공_라이즈_은석.jpg';
+import 주인공_샤이니_민호 from './images/주인공_샤이니_민호.jpg';
+import 주인공_트와이스_사나 from './images/주인공_트와이스_사나.jpg';
+
+import 라이즈_투어 from './images/라이즈_투어.png';
+import 샤이니_투어 from './images/샤이니_투어.png';
+import 트와이스_투어 from './images/트와이스_투어.png';
+
+import 라이즈_쇼타로 from './images/라이즈_쇼타로.jpg';
+import 샤이니_키 from './images/샤이니_키.jpg';
+import 트와이스_나연 from './images/트와이스_나연.jpg';
+
+import 한자_라이즈_소희 from './images/한자_라이즈_소희.jpg';
+import 한자_샤이니_민호 from './images/한자_샤이니_민호.jpg';
+import 한자_트와이스_지효 from './images/한자_트와이스_지효.jpg';
+
 import audio1 from './audios/1-108.mp3';
 import video1 from './videos/example.mp4';
 
 // 1. 문제 구조
 const INITIAL_KEYWORDS = [
-  { keyword: '주인공', description: 'Q. 다음 사진 속 주인공을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '주인공', description: 'Q. 다음 사진 속 주인공을 맞히시오.', videoUrl: '', audioUrl: '', images: [주인공_샤이니_민호, 주인공_트와이스_사나] },
   { keyword: '영단어', description: 'Q. 다음 영어 가사의 빈칸을 채우시오', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '사복', description: 'Q. 다음 사진을 보고, 곡 제목을 맞히시오.', videoUrl: '', audioUrl: '', images: [라이즈_사복, 샤이니_사복, 트와이스_사복] },
-  { keyword: '시상식', description: 'Q. 다음 사진을 보고, 어떤 곡으로 수상했는지 맞히시오.', videoUrl: '', audioUrl: '', images: [라이즈_시상식, 샤이니_시상식, 트와이스_시상식] },
+  { keyword: '사복', description: 'Q. 다음 사진을 보고, 곡 제목을 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_사복, 트와이스_사복] },
+  { keyword: '시상식', description: 'Q. 다음 사진을 보고, 어떤 곡으로 수상했는지 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_시상식, 트와이스_시상식] },
   { keyword: '이벤트', description: 'Q. 다음 콘서트의 슬로건 문구를 정확히 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '낭독', description: 'Q. AI가 읽어주는 가사를 듣고, 곡 제목과 해당 파트의 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '노래제목', description: 'Q. 다음 앨범의 트랙 리스트를 순서대로 맞히시오. (제한 시간 1분 30초)', videoUrl: '', audioUrl: '', images: [] },
@@ -78,14 +94,14 @@ const INITIAL_KEYWORDS = [
   { keyword: '소속사', description: 'Q. 다음 멤버의 소속사 입사 경로를 설명하시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '유튜브', description: 'Q. 우리 팀 뮤직비디오 중 조회수가 가장 높은 곡을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '실루엣', description: 'Q. 다음 사진을 보고, 빈칸에 맞는 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_실루엣, 트와이스_실루엣] },
-  { keyword: '한자', description: 'Q.  다음 멤버 이름에 쓰인 한자 뜻을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '한자', description: 'Q.  다음 멤버 이름에 쓰인 한자 뜻을 맞히시오.', videoUrl: '', audioUrl: '', images: [한자_샤이니_민호, 한자_트와이스_지효] },
   { keyword: '앵콜', description: 'Q. 다음 콘서트의 앵콜 곡을 <보기>에서 모두 고르시오.', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '노래방', description: 'Q. 다음 영상 속 해당 파트를 부르시오. ', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '눈물', description: 'Q. 다음 시상식에서 눈물을 보인 멤버 이름을 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_눈물, 트와이스_눈물] },
   { keyword: '듣기', description: 'Q. 다음 소리의 주인공을 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '편지', description: 'Q. 다음 편지를 쓴 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '편지', description: 'Q. 다음 편지를 쓴 멤버를 맞히시오.', videoUrl: '', audioUrl: '', images: [샤이니_키, 트와이스_나연] },
   { keyword: '릴레이', description: 'Q. 우리 팀 노래 중, 제목이 2음절 이하인 곡을 각자 1개씩 말하시오.', videoUrl: video1, audioUrl: '', images: [] },
-  { keyword: '투어', description: 'Q. 다음 사진을 보고, 콘서트 장소를 맞히시오.', videoUrl: '', audioUrl: audio1, images: [] },
+  { keyword: '투어', description: 'Q. 다음 사진을 보고, 콘서트 장소를 맞히시오.', videoUrl: '', audioUrl: audio1, images: [샤이니_투어, 트와이스_투어] },
   { keyword: '1위', description: 'Q. 우리 팀의 음악방송 첫 1위 곡과 프로그램명을 맞히시오', videoUrl: '', audioUrl: '', images: [] },
 ];
 interface BingoCellProps {
