@@ -252,7 +252,7 @@ export default function App() {
         }}
       >
         {/* 적응형 빙고 그리드 */}
-        <div className="grid grid-cols-5 gap-x-2 gap-y-35 w-full h-full relative z-20">
+        <div className="grid grid-cols-5 gap-x-2 gap-y-20 w-full h-full relative z-20">
                 {gameState.cells.map(cell => (
                   <BingoCell
                     key={cell.id}
@@ -420,14 +420,14 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
                   key={idx}
                   whileHover={{ scale: 1.05 }}
                   // max-h-[400px]를 추가하여 전체 컨테이너의 최대 높이를 제한합니다.
-                  className="relative w-full max-h-[380px] rounded-2xl overflow-hidden border-2 border-white/10 bg-black/20 flex items-center justify-center"
+                  className="relative w-full max-h-[300px] rounded-2xl overflow-hidden border-2 border-white/10 bg-black/20 flex items-center justify-center"
                 >
                   <img 
                     src={imgUrl} 
                     alt={`Mission ref ${idx}`} 
                     // w-full과 h-auto로 비율을 유지하되, max-h를 주어 이미지가 400px을 넘지 않게 합니다.
                     // object-contain은 이미지가 400px에 걸릴 경우 짤리지 않고 영역 안에 다 들어오게 합니다.
-                    className="w-full h-auto max-h-[400px] object-contain block"
+                    className="w-full h-auto max-h-[300px] object-contain block"
                   />
                 </motion.div>
               ))}
