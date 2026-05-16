@@ -92,7 +92,7 @@ const INITIAL_KEYWORDS = [
   { keyword: '실루엣', description: '다음 사진을 보고, 빈칸에 맞는 멤버를 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [샤이니_실루엣, 트와이스_실루엣] },
   { keyword: '한자', description: '다음 멤버 이름에 쓰인 한자 뜻을 맞히시오.', explanation: '', hanja1:'崔珉豪 (최민호)\n OO최 OO민 OO호', hanja2:'朴志效 (박지효)\nOO박 OO지 OO효', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '앵콜', description: '다음 콘서트의 앵콜 곡을 <보기>에서 모두 고르시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '노래방', description: '다음 영상 속 해당 파트를 부르시오. ', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '노래방', description: '다음 영상 속 해당 파트를 부르시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '눈물', description: '다음 시상식에서 눈물을 보인 멤버 이름을 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [샤이니_눈물, 트와이스_눈물] },
   { keyword: '듣기', description: '다음 소리의 주인공을 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '편지', description: '다음 편지를 쓴 멤버를 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [샤이니_키, 트와이스_나연] },
