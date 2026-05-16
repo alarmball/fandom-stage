@@ -98,7 +98,7 @@ const INITIAL_KEYWORDS = [
   { keyword: '편지', description: '다음 편지를 쓴 멤버를 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [샤이니_키, 트와이스_나연] },
   { keyword: '릴레이', description: '우리 팀 노래 중,\n 제목이 2음절 이하인 곡을 각자 1개씩 말하시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '투어', description: '다음 사진을 보고, 콘서트 장소를 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [샤이니_투어, 트와이스_투어] },
-  { keyword: '1위', description: '우리 팀의 음악방송 첫 1위 곡과 프로그램명을 맞히시오', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
+  { keyword: '1위', description: '우리 팀의 음악방송 첫 1위 곡과 프로그램명을 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
 ];
 interface BingoCellProps {
   cell: CellData;
@@ -377,16 +377,13 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
               className="text-center whitespace-pre-wrap font-bold"
               style={{ 
                 fontFamily: "'sandoll Gothic Neo', sans-serif", 
-                textShadow: `
-                  /* 바깥쪽으로 넓게 퍼지는 후광 그림자 */
-                  0px 0px 20px rgba(0, 0, 0, 1),
-                  0px 0px 40px rgba(0, 0, 0, 0.8),
-                  /* 글자 윤곽을 잡아주는 선명한 테두리 */
-                  -2px -2px 0px #000,
-                  2px -2px 0px #000,
-                  -2px 2px 0px #000,
-                  2px 2px 0px #000
-                `
+                WebkitTextStroke: '4px #000000',
+                paintOrder: 'stroke fill',
+                filter: `
+                  drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.5))
+                `,
+                textTransform: 'uppercase',
+                letterSpacing: '-0.05em'
               }}
             >
               {cell.description}
