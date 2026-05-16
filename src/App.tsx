@@ -354,9 +354,9 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
               WebkitTextStroke: '4px #000000',
               paintOrder: 'stroke fill',
               textShadow: `
-                4px 4px 0px #000000,
+                2px 2px 0px #000000,
                 0px 0px 20px rgba(0, 0, 0, 0.8),
-                0px 0px 35px rgba(255, 255, 255, 0.6)
+                0px 0px 15px rgba(255, 255, 255, 0.6)
               `,
               textTransform: 'uppercase',
               letterSpacing: '-0.05em'
@@ -377,7 +377,7 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
               className="text-center whitespace-pre-wrap font-bold"
               style={{ 
                 fontFamily: "'sandoll Gothic Neo', sans-serif", 
-                WebkitTextStroke: '4px #000000',
+                WebkitTextStroke: '2px #000000',
                 paintOrder: 'stroke fill',
                 filter: `
                   drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.5))
@@ -393,13 +393,16 @@ function QuestionModal({ cell, onClose, onResult, canLockA, canLockB, cheerIcons
           {/* 부가 설명 영역 (Explanation) */}
           {cell.explanation && (
             <div 
-              className="text-2xl md:text-3xl text-white/90 leading-relaxed break-keep max-w-4xl mx-auto w-full -mt-6 font-bold"
+              className="text-3xl md:text-4xl text-white/90 leading-relaxed break-keep max-w-4xl mx-auto w-full -mt-6 font-bold"
               style={{ 
                 fontFamily: "'sandoll Gothic Neo', sans-serif", 
-                textShadow: `
-                  2px 2px 8px rgba(0, 0, 0, 1),
-                  0 0 15px rgba(0, 0, 0, 0.5)
-                `
+                WebkitTextStroke: '2px #000000',
+                paintOrder: 'stroke fill',
+                filter: `
+                  drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.5))
+                `,
+                textTransform: 'uppercase',
+                letterSpacing: '-0.05em'
               }}
             >
               <p className="text-center whitespace-pre-wrap">
@@ -604,7 +607,10 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
         (cell.status === CellStatus.EMPTY || cell.status === CellStatus.FAIL) && (
           <span 
             className="z-10 text-lg md:text-3xl lg:text-4xl text-white font-black pointer-events-none drop-shadow-[0_4px_15px_rgba(0,0,0,1)]"
-            style={{ fontFamily: "'Apple SD Gothic Neo', 'sandoll Gothic Neo', sans-serif" }}
+            style={{ 
+              fontFamily: "'Apple SD Gothic Neo', 'sandoll Gothic Neo', sans-serif",
+              fontWeight: 'bold' 
+            }}
           >
             {cell.keyword}
           </span>
