@@ -26,7 +26,7 @@ import chance_cell_3 from './cells/chance_3.png';
 import cheer_a from './icons/cheer_icon1.png';
 import cheer_b from './icons/cheer_icon2.png';
 import cheer_both from './icons/cheer_icon3.png';
-import cheer_fail from './icons/cheer_icon4.png';
+import cheer_fail from './icons/cheer_icon4.png';       
 import cheer_lock_a from './icons/cheer_icon5.png';
 import cheer_lock_b from './icons/cheer_icon6.png';
 
@@ -85,7 +85,7 @@ const INITIAL_KEYWORDS = [
   { keyword: 'SNS', description: 'SNS에서 멤버가 직접 태그한 위치를 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [샤이니_민호, 트와이스_사나] },
   { keyword: '교복', description: '다음 멤버가 졸업한 중학교 이름을 맞히시오. ', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '산수', description: '멤버 2명의 생년월일 숫자를 모두 더하시오.', explanation: 'ex) 1993년 9월 18일, 1995년 10월 18일 \n = 1+9+9+3+0+9+1+8 + 1+9+9+5+1+0+1+8 = 74', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
-  { keyword: '빈칸', description: '다음 기사 제목의 빈칸을 채우시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [샤이니_미다시, 트와이스_미다시, 샤이니_기사사진, 트와이스_기사사진] },
+  { keyword: '빈칸', description: '다음 기사 제목의 빈칸을 채우시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [라이즈_미다시, 트와이스_미다시, 샤이니_기사사진, 트와이스_기사사진] },
   { keyword: '팬', description: '다음 팬송에서 제시어가 총 몇 번 등장하는지 맞히시오.', explanation: '(제한 시간 2분)', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '소속사', description: '다음 멤버의 소속사 입사 경로를 설명하시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
   { keyword: '유튜브', description: '우리 팀 뮤직비디오 중\n 조회수가 가장 높은 곡을 맞히시오.', explanation: '', hanja1: '', hanja2: '', videoUrl: '', audioUrl: '', images: [] },
@@ -612,7 +612,7 @@ function BingoCell({ cell, onClick, cellIndex, bingoAnimationInfo }: BingoCellPr
               fontWeight: 'bold' 
             }}
           >
-            {cell.keyword}
+            {cell.keyword === '팬' ? '?' : cell.keyword}
           </span>
         )
       )}
