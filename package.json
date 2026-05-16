@@ -2,7 +2,7 @@
   "name": "fandom-stage_once_shinee",
   "description": "once vs shinee bingo game",
   "private": true,
-  "version": "0.0.6",
+  "version": "0.0.8",
   "homepage": ".",
   "main": "main.js",
   "type": "module",
